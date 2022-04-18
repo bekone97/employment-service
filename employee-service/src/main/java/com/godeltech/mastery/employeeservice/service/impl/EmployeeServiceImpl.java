@@ -12,12 +12,15 @@ import com.godeltech.mastery.employeeservice.dto.EmployeeDtoResponse;
 import com.godeltech.mastery.employeeservice.exception.ResourceNotFoundException;
 import com.godeltech.mastery.employeeservice.mapping.Mapper;
 import com.godeltech.mastery.employeeservice.service.EmployeeService;
+import com.godeltech.mastery.employeeservice.service.KafkaMessageSender;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import lombok.var;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeoutException;
 import java.util.stream.Collectors;
 
 import static com.godeltech.mastery.employeeservice.utils.ConstantUtil.Exception.EMPLOYEE_ID_FOR_EXCEPTION;
@@ -33,13 +36,13 @@ public class EmployeeServiceImpl implements EmployeeService {
     private final Mapper mapper;
     private final PredicateFactory<Employee> predicateFactory;
     private final DepartmentApiClient departmentApiClient;
+    private final KafkaMessageSender kafkaMessageSender;
 
 
     public List<EmployeeDtoResponse> getEmployees() {
         log.debug("Get all employees");
-
         return employeeRepository.findAll().stream()
-                .map(employee -> mapper.mapToEmployeeDtoResponse(employee, departmentApiClient.getDepartmentDtoById(employee.getDepartmentId())))
+                .map(employee -> mapper.mapToEmployeeDtoResponse(employee,departmentApiClient.getDepartmentDtoById(employee.getDepartmentId())))
                 .collect(Collectors.toList());
     }
 
@@ -49,7 +52,7 @@ public class EmployeeServiceImpl implements EmployeeService {
                 employeeId);
 
         return employeeRepository.findById(employeeId)
-                .map(employee -> mapper.mapToEmployeeDtoResponse(employee, departmentApiClient.getDepartmentDtoById(employee.getDepartmentId())))
+                .map(employee -> mapper.mapToEmployeeDtoResponse(employee,departmentApiClient.getDepartmentDtoById(employee.getDepartmentId())))
                 .orElseThrow(() -> {
                     log.error("Employee with id={} was not found",
                             employeeId);
@@ -58,13 +61,14 @@ public class EmployeeServiceImpl implements EmployeeService {
                 });
     }
 
-    public EmployeeDtoResponse save(EmployeeDtoRequest employeeDtoRequest) {
+    public EmployeeDtoResponse save(EmployeeDtoRequest employeeDtoRequest) throws ExecutionException, InterruptedException, TimeoutException {
         log.debug("Save a new employee :{}", employeeDtoRequest);
         checkExistingDepartment(employeeDtoRequest);
-
         var employee = employeeRepository.save(mapper.mapToEmployee(employeeDtoRequest));
 
-        return mapper.mapToEmployeeDtoResponse(employee, departmentApiClient.getDepartmentDtoById(employee.getDepartmentId()));
+        var employeeDtoResponse= mapper.mapToEmployeeDtoResponse(employee,departmentApiClient.getDepartmentDtoById(employee.getDepartmentId()));
+        kafkaMessageSender.send(employeeDtoResponse);
+        return employeeDtoResponse;
     }
 
 
@@ -79,7 +83,7 @@ public class EmployeeServiceImpl implements EmployeeService {
                     return employee;
                 })
                 .map(employeeRepository::save)
-                .map(emp->mapper.mapToEmployeeDtoResponse(emp, departmentApiClient.getDepartmentDtoById(emp.getDepartmentId())))
+                .map(emp->mapper.mapToEmployeeDtoResponse(emp,departmentApiClient.getDepartmentDtoById(emp.getDepartmentId())))
                 .orElseThrow(() -> {
                     log.error("Employee with id={} was not found",
                             employeeId);
@@ -102,7 +106,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         var specification = new EmployeeSpecification(
                 new SearchCriteria("firstName", Operation.EQUALS, firstName), predicateFactory);
         return employeeRepository.findAll(specification).stream()
-                .map(emp->mapper.mapToEmployeeDtoResponse(emp, departmentApiClient.getDepartmentDtoById(emp.getDepartmentId())))
+                .map(emp->mapper.mapToEmployeeDtoResponse(emp,departmentApiClient.getDepartmentDtoById(emp.getDepartmentId())))
                 .collect(Collectors.toList());
     }
 
