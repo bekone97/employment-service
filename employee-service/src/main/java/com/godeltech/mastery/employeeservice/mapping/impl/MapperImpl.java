@@ -5,19 +5,25 @@ import com.godeltech.mastery.employeeservice.dto.DepartmentDtoResponse;
 import com.godeltech.mastery.employeeservice.dto.EmployeeDtoRequest;
 import com.godeltech.mastery.employeeservice.dto.EmployeeDtoResponse;
 import com.godeltech.mastery.employeeservice.mapping.Mapper;
-import lombok.RequiredArgsConstructor;
 import lombok.var;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
 @Component
-@RequiredArgsConstructor
 public class MapperImpl implements Mapper {
 
     private final ModelMapper modelMapper;
+
+    public MapperImpl(ModelMapper modelMapper) {
+        this.modelMapper = modelMapper;
+        var propertyMapper = this.modelMapper.createTypeMap(EmployeeDtoRequest.class,Employee.class);
+        propertyMapper.addMappings(mapping -> mapping.skip(Employee::setEmployeeId));
+    }
+
     @Override
     public Employee mapToEmployee(EmployeeDtoRequest employeeDtoRequest) {
-        return modelMapper.map(employeeDtoRequest,Employee.class);
+        var employee= modelMapper.map(employeeDtoRequest,Employee.class);
+        return employee;
     }
 
     @Override

@@ -6,6 +6,7 @@
     <modules>
         <module>employee-service</module>
         <module>department-service</module>
+        <module>email-service</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -24,6 +25,9 @@
         <modelmapper.version>3.1.0</modelmapper.version>
         <springfox.version>2.9.2</springfox.version>
         <json-path.version>2.4.0</json-path.version>
+        <spring-kafka.version>2.8.4</spring-kafka.version>
+        <openfeign.version>3.1.1</openfeign.version>
+        <springdoc-openapi.version>1.6.6</springdoc-openapi.version>
     </properties>
     <dependencies>
         <dependency>
@@ -49,7 +53,10 @@
             <artifactId>guava</artifactId>
             <version>23.0</version>
         </dependency>
-
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+        </dependency>
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
@@ -93,7 +100,7 @@
         <dependency>
             <groupId>org.springdoc</groupId>
             <artifactId>springdoc-openapi-ui</artifactId>
-            <version>1.6.6</version>
+            <version>${springdoc-openapi.version}</version>
         </dependency>
         <dependency>
             <groupId>org.mockito</groupId>
@@ -109,7 +116,16 @@
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-openfeign</artifactId>
-            <version>3.1.1</version>
+            <version>${openfeign.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.kafka</groupId>
+            <artifactId>spring-kafka</artifactId>
+            <version>${spring-kafka.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-mail</artifactId>
         </dependency>
 
 

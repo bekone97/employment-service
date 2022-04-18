@@ -21,6 +21,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeoutException;
 
 import static com.godeltech.mastery.employeeservice.utils.ConstantUtil.Response.*;
 
@@ -92,7 +94,7 @@ public class EmployeeController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public EmployeeDtoResponse saveEmployee(@Parameter(description = "Employee information for a new employee to be created",required = true)
-                                     @Valid @RequestBody EmployeeDtoRequest employeeDtoRequest) {
+                                     @Valid @RequestBody EmployeeDtoRequest employeeDtoRequest) throws ExecutionException, InterruptedException, TimeoutException {
 
         log.info("Save a new employee:{}",employeeDtoRequest);
 
