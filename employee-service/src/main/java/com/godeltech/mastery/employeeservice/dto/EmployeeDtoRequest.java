@@ -1,6 +1,7 @@
 package com.godeltech.mastery.employeeservice.dto;
 
 import com.godeltech.mastery.employeeservice.dao.entity.Gender;
+import com.godeltech.mastery.employeeservice.dao.entity.Phone;
 import com.godeltech.mastery.employeeservice.validator.EmployeeAdultConstraint;
 import com.godeltech.mastery.employeeservice.validator.ValidId;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -13,6 +14,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
+import java.util.List;
 
 @Data
 @Builder
@@ -50,4 +52,7 @@ public class EmployeeDtoRequest {
     @EmployeeAdultConstraint
     @NotNull(message = "{employee.validation.dateOfBirth.notNull}")
     private LocalDate dateOfBirth;
+
+    @Schema(description = "Phone numbers of employee")
+    private List<PhoneDto> phones;
 }

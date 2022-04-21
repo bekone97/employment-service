@@ -1,6 +1,7 @@
 package com.godeltech.mastery.employeeservice.handling;
 
 
+import com.godeltech.mastery.employeeservice.exception.NotUniqueResourceException;
 import com.godeltech.mastery.employeeservice.exception.ResourceNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import lombok.var;
@@ -28,6 +29,13 @@ public class ApiExceptionHandler {
     public ApiErrorResponse resourceNotFoundExceptionHandler(HttpServletRequest request, ResourceNotFoundException exception) {
         log.error("The {}.There is no entity in database : {} and url of request : {}",
             exception.getClass().getSimpleName(),exception.getMessage(),request.getRequestURL());
+        return new ApiErrorResponse(exception.getMessage());
+    }
+    @ExceptionHandler(value = NotUniqueResourceException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ApiErrorResponse notUniqueResourceExceptionHandler(HttpServletRequest request, ResourceNotFoundException exception) {
+        log.error("The {}.The value is already exists : {} and url of request : {}",
+                exception.getClass().getSimpleName(),exception.getMessage(),request.getRequestURL());
         return new ApiErrorResponse(exception.getMessage());
     }
 

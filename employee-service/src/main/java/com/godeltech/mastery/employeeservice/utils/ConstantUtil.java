@@ -9,21 +9,13 @@ public class ConstantUtil {
         public static final String GENDER = "gender";
         public static final String DATE_OF_BIRTH = "date_of_birth";
         public static final String JOB_TITTLE = "job_tittle";
-        public static final String FIND_ALL_EMPLOYEE = "select * from employee";
-        public static final String FIND_EMPLOYEE_BY_ID = "SELECT* FROM employee where employee_id=?";
-        public static final String CREATE_EMPLOYEE = "INSERT INTO employee(first_name,last_name,department_id," +
-                "job_tittle,date_of_birth,gender) VALUES(?,?,?,?,?,(SELECT CAST(? as gender_type)))";
-        public static final String UPDATE_EMPLOYEE_BY_ID = "UPDATE employee SET first_name=?, last_name=?,department_id=?," +
-                "job_tittle=?,gender=(SELECT CAST(? as gender_type)),date_of_birth=? where employee_id=?";
-        public static final String DELETE_EMPLOYEE_BY_ID = "DELETE FROM employee WHERE employee_id=?";
-
     }
     public static class Exception{
         public final static String NO_FOUNDED_PATTERN = "%s wasn't found by %s=%s";
         public static final String EMPLOYEE_ID_FOR_EXCEPTION = "employeeId";
         public static final String VALIDATION_ERROR = "Validation error";
         public static final String NO_PREDICATE_TYPE = "Predicate component doesn't exist for predicate type";
-
+        public final static String NOT_UNIQUE_PATTERN = "%s is already exists by %s=%s";
     }
     public static class Response{
         public static final String MEDIA_TYPE="application/json";
