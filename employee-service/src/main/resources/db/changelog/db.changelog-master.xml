@@ -9,4 +9,6 @@
     <include file="classpath:db/changelog/v.0.1/2022-03-23-changes-create-type-gender_type.xml"/>
     <include file="classpath:db/changelog/v.0.1/2022-03-23-changes-create-table-employee.xml"/>
     <include file="classpath:db/changelog/v.0.1/2022-03-23-changes-filling-table-employee.xml"/>
+    <include file="classpath:db/changelog/v.0.3/2022-04-18-changes-create-table-phone.xml"/>
+    <include file="classpath:db/changelog/v.0.3/2022-04-18-changes-filling-table-phone.xml"/>
 </databaseChangeLog>

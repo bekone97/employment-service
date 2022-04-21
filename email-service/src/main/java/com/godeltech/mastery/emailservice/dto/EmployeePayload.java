@@ -34,4 +34,5 @@ public class EmployeePayload {
 
     @Schema(description = "Employee date of birth",example = "2000-04-05")
     private LocalDate dateOfBirth;
+
 }

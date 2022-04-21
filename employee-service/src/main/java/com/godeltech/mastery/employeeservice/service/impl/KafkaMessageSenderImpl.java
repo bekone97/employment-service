@@ -11,6 +11,8 @@ import org.springframework.kafka.requestreply.RequestReplyFuture;
 import org.springframework.kafka.support.KafkaHeaders;
 import org.springframework.stereotype.Component;
 
+import java.nio.charset.StandardCharsets;
+
 import static com.godeltech.mastery.employeeservice.utils.ConstantUtil.Kafka.REPLY_TOPIC_EMPLOYEE_CREATION;
 import static com.godeltech.mastery.employeeservice.utils.ConstantUtil.Kafka.TOPIC_EMPLOYEE_CREATION;
 
@@ -20,16 +22,15 @@ import static com.godeltech.mastery.employeeservice.utils.ConstantUtil.Kafka.TOP
 @Slf4j
 public class KafkaMessageSenderImpl implements KafkaMessageSender {
 
-    private final ReplyingKafkaTemplate<String,Object,Object> replyingKafkaTemplate;
+    private final ReplyingKafkaTemplate<String, Object, Object> replyingKafkaTemplate;
 
     @Override
-    public void send(EmployeeDtoResponse employeeDtoResponse){
-        log.info("Send value by kafka employeeDtoResponse:{}",employeeDtoResponse);
+    public void send(EmployeeDtoResponse employeeDtoResponse) {
+        log.info("Send value by kafka employeeDtoResponse:{}", employeeDtoResponse);
         ProducerRecord<String, Object> record = new ProducerRecord<>(TOPIC_EMPLOYEE_CREATION, employeeDtoResponse);
-        record.headers().add(new RecordHeader(KafkaHeaders.REPLY_TOPIC, REPLY_TOPIC_EMPLOYEE_CREATION.getBytes()));
+        record.headers().add(new RecordHeader(KafkaHeaders.REPLY_TOPIC, REPLY_TOPIC_EMPLOYEE_CREATION.getBytes(StandardCharsets.UTF_8)));
         RequestReplyFuture<String, Object, Object> sendAndReceive = replyingKafkaTemplate.sendAndReceive(record);
-        sendAndReceive.addCallback(result -> log.info("Reply value was received:{}",result.value()),
-                ex -> log.error("Reply value wasn't received:{}",ex.getMessage()));
-
+        sendAndReceive.addCallback(result -> log.info("Reply value was received:{}", result.value()),
+                ex -> log.error("Reply value wasn't received:{}", ex.getMessage()));
     }
 }

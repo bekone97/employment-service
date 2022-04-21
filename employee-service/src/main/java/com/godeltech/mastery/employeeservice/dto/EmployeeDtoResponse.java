@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Data
 @Builder
@@ -24,7 +25,7 @@ public class EmployeeDtoResponse {
     @Schema(description = "Employee last name",example = "Miachyn")
     private String lastName;
 
-//    @Schema(description = "Employee department",example = "2")
+    @Schema(description = "Employee department",example = "2")
     private DepartmentDtoResponse department;
 
     @Schema(description = "Employee job tittle",example = "IT")
@@ -35,4 +36,7 @@ public class EmployeeDtoResponse {
 
     @Schema(description = "Employee date of birth",example = "2000-04-05")
     private LocalDate dateOfBirth;
+
+    @Schema(description = "Phone numbers of employee")
+    private List<PhoneDto> phones;
 }

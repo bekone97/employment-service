@@ -21,6 +21,7 @@ import org.springframework.kafka.support.converter.StringJsonMessageConverter;
 import org.springframework.kafka.support.mapping.DefaultJackson2JavaTypeMapper;
 import org.springframework.kafka.support.mapping.Jackson2JavaTypeMapper;
 import org.springframework.kafka.support.serializer.JsonSerializer;
+import org.springframework.util.backoff.FixedBackOff;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -85,7 +86,8 @@ public class KafkaConfig {
         factory.setConsumerFactory(consumerFactory());
         factory.setReplyTemplate(replyKafkaTemplate());
         factory.setMessageConverter(converter());
-        factory.setCommonErrorHandler(new DefaultErrorHandler(new DeadLetterPublishingRecoverer(replyKafkaTemplate())));
+        factory.setCommonErrorHandler(new DefaultErrorHandler(new DeadLetterPublishingRecoverer(replyKafkaTemplate()),
+                new FixedBackOff(0,1L)));
         return factory;
     }
 

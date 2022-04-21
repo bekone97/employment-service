@@ -5,8 +5,12 @@ import com.godeltech.mastery.employeeservice.dto.DepartmentDtoResponse;
 import com.godeltech.mastery.employeeservice.dto.EmployeeDtoRequest;
 import com.godeltech.mastery.employeeservice.dto.EmployeeDtoResponse;
 
-public interface Mapper {
+public interface EmployeeMapper {
     Employee mapToEmployee(EmployeeDtoRequest employeeDtoRequest);
-    EmployeeDtoResponse mapToEmployeeDtoResponse(Employee employee);
+    Employee mapToEmployee(EmployeeDtoRequest employeeDtoRequest,Long employeeId);
     EmployeeDtoResponse mapToEmployeeDtoResponse(Employee employee, DepartmentDtoResponse departmentDtoResponse);
+    Employee initEmployeeWithId(Long employeeId);
+
+
 }
+
