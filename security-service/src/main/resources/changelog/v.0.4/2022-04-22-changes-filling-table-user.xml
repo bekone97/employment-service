@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns:pro="http://www.liquibase.org/xml/ns/pro"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+      https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.1.xsd
+      http://www.liquibase.org/xml/ns/pro
+      http://www.liquibase.org/xml/ns/pro/liquibase-pro-4.1.xsd">
+    <changeSet id="2022-04-22-changes-filling-table-user" author="a.miachyn">
+        <insert tableName="user" schemaName="jwt">
+            <column name="username" value="admin"/>
+            <column name="password" value="$2a$12$ea4a7.Zc87j/UOV/NPwsTuD7H9tqPRq3VRHxIZtYYPhQrlagbmeCS"/>
+            <column name="role" value="ROLE_ADMIN"/>
+        </insert>
+        <insert tableName="user" schemaName="jwt">
+            <column name="username" value="user"/>
+            <column name="password" value="$2a$12$49mcb5gsvYX8jFYp4kbmRuebAlphRI2aexNiC/mvEKOZ9O.OULflu"/>
+            <column name="role" value="ROLE_USER"/>
+        </insert>
+
+    </changeSet>
+</databaseChangeLog>

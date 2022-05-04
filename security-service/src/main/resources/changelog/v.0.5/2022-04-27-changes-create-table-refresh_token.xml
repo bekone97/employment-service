@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns:pro="http://www.liquibase.org/xml/ns/pro"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+      https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.1.xsd
+      http://www.liquibase.org/xml/ns/pro
+      http://www.liquibase.org/xml/ns/pro/liquibase-pro-4.1.xsd">
+    <changeSet id="2022-04-22-changes-create-table-refresh_token" author="a.miachyn">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="refresh_token"/>
+            </not>
+        </preConditions>
+        <createTable tableName="refresh_token" schemaName="jwt">
+            <column name="refresh_token_id" type="BIGSERIAL">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="token" type="VARCHAR(528)">
+                <constraints unique="true" nullable="false"/>
+            </column>
+            <column name="expires" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="revoked" type="datetime"/>
+            <column name="replaced_by_token" type="VARCHAR(528)"/>
+            <column name="is_active" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
+            <column name="user_id" type="BIGSERIAL">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+</databaseChangeLog>
