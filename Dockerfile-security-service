@@ -1,0 +1,11 @@
+FROM maven:3.8.4-jdk-11-slim AS build
+WORKDIR /workspace/app
+COPY . /workspace/app/.
+RUN mvn -f /workspace/app/pom.xml clean package -pl :security-service -am -DskipTests
+
+FROM java:8
+RUN groupadd --gid 2000 usr && useradd -m -d /usr/services/ -s /bin/bash -G sudo usr --uid 2000 --gid usr
+USER usr
+COPY --from=build /workspace/app/security-service/target/security-service-0.0.1-SNAPSHOT.jar /usr/services/security-service.jar
+EXPOSE 8000
+ENTRYPOINT ["java", "-jar", "/usr/services/security-service.jar"]

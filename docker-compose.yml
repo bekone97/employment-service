@@ -1,5 +1,60 @@
 version: '3.8'
 services:
+  employee-service:
+    build:
+      context: .
+      dockerfile: Dockerfile-employee-service
+    ports:
+        - "8080:8080"
+    environment:
+        - SERVER_PORT=8080
+        - SPRING_DATASOURCE_URL=jdbc:postgresql://db/employee_db
+        - CLIENT_DEPARTMENT_BASE_URL=http://department-service:8082
+        - KAFKA_BOOTSTRAP_SERVER=broker:29092
+        - SPRING_KAFKA_CONSUMER_BOOTSTRAP-SERVERS=broker:29092
+
+    depends_on:
+        - db
+        - broker
+  email-service:
+    build:
+      context: .
+      dockerfile: Dockerfile-email-service
+    ports:
+     - "8083:8083"
+    environment:
+        - SERVER_PORT=8083
+        - SPRING_DATASOURCE_URL=jdbc:postgresql://db/employee_db
+        - KAFKA_BOOTSTRAP_SERVER=broker:29092
+        - SPRING_MAIL_HOST=mailhog
+
+    depends_on:
+        - db
+        - broker
+        - mailhog
+  department-service:
+    build:
+      context: .
+      dockerfile: Dockerfile-department-service
+    ports:
+       - "8082:8082"
+    environment:
+         - SERVER_PORT=8082
+         - SPRING_DATASOURCE_URL=jdbc:postgresql://db/employee_db
+    depends_on:
+         - db
+  security-service:
+    build:
+      context: .
+      dockerfile: Dockerfile-security-service
+    ports:
+       - "8000:8000"
+    environment:
+         - SERVER_PORT=8000
+         - SPRING_DATASOURCE_URL=jdbc:postgresql://db/employee_db
+    depends_on:
+          - db
+
   db:
     image: postgres:11.5
     restart: always

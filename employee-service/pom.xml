@@ -13,6 +13,7 @@
     <packaging>jar</packaging>
 
     <properties>
+        <app.start.class>com.godeltech.mastery.employeeservice.EmployeeServiceApplication</app.start.class>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
     </properties>
@@ -21,8 +22,16 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <configuration>
+                            <mainClass>${app.start.class}</mainClass>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
+
 
 </project>
