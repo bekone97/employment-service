@@ -1,9 +1,9 @@
 package com.godeltech.mastery.departmentservice.security.filter;
 
 
-import com.godeltech.mastery.departmentservice.exception.JwtAuthenticationException;
 import com.godeltech.mastery.departmentservice.security.token.JwtAuthenticationToken;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -56,7 +56,7 @@ public class JwtAuthenticationTokenFilter extends AbstractAuthenticationProcessi
     private String getJwtFromRequest(HttpServletRequest request){
         String authorizationHeader = request.getHeader(AUTHORIZATION);
         if (authorizationHeader == null || !authorizationHeader.startsWith(TOKEN_PREFIX)) {
-            throw new JwtAuthenticationException("No JWT token found in request headers");
+            throw new AuthenticationCredentialsNotFoundException("No JWT token found in request headers");
         }
         return authorizationHeader.substring(TOKEN_PREFIX.length());
     }

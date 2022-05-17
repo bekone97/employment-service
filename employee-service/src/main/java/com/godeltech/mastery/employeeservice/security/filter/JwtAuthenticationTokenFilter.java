@@ -1,6 +1,6 @@
-package com.godeltech.mastery.securityservice.filter;
+package com.godeltech.mastery.employeeservice.security.filter;
 
-import com.godeltech.mastery.securityservice.token.JwtAuthenticationToken;
+import com.godeltech.mastery.employeeservice.security.token.JwtAuthenticationToken;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -43,10 +43,8 @@ public class JwtAuthenticationTokenFilter extends AbstractAuthenticationProcessi
     }
 
     @Override
-    public Authentication attemptAuthentication(HttpServletRequest request,
-                                                HttpServletResponse response)
-            throws AuthenticationException {
-        final String token = getJwtFromRequest(request);
+    public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException, IOException, ServletException {
+        final String token= getJwtFromRequest(request);
         final JwtAuthenticationToken authToken = new JwtAuthenticationToken(token);
 
         return getAuthenticationManager().authenticate(authToken);

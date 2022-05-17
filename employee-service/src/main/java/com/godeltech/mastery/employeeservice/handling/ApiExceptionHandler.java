@@ -1,6 +1,7 @@
 package com.godeltech.mastery.employeeservice.handling;
 
 
+import com.godeltech.mastery.employeeservice.exception.JwtAuthenticationException;
 import com.godeltech.mastery.employeeservice.exception.NotUniqueResourceException;
 import com.godeltech.mastery.employeeservice.exception.ResourceNotFoundException;
 import lombok.extern.slf4j.Slf4j;
@@ -85,6 +86,13 @@ public class ApiExceptionHandler {
     @ExceptionHandler(value = ConnectException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ApiErrorResponse restClientException(HttpServletRequest request,ConnectException exception){
+        log.error("The {}. Wrong parameters :{} and url of request: {} ",
+                exception.getClass().getSimpleName(),exception.getMessage(),request.getRequestURL());
+        return new ApiErrorResponse(exception.getMessage());
+    }
+    @ExceptionHandler(value = JwtAuthenticationException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public ApiErrorResponse jwtAuthenticationExceptionHandler(HttpServletRequest request,ConnectException exception){
         log.error("The {}. Wrong parameters :{} and url of request: {} ",
                 exception.getClass().getSimpleName(),exception.getMessage(),request.getRequestURL());
         return new ApiErrorResponse(exception.getMessage());
