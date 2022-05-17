@@ -1,13 +1,16 @@
 package com.godeltech.mastery.employeeservice.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.godeltech.mastery.employeeservice.controller.EmployeeController;
 import com.godeltech.mastery.employeeservice.dao.entity.Employee;
 import com.godeltech.mastery.employeeservice.dao.entity.Gender;
+import com.godeltech.mastery.employeeservice.dao.entity.Phone;
 import com.godeltech.mastery.employeeservice.dto.DepartmentDtoResponse;
 import com.godeltech.mastery.employeeservice.dto.EmployeeDtoRequest;
 import com.godeltech.mastery.employeeservice.dto.EmployeeDtoResponse;
+import com.godeltech.mastery.employeeservice.dto.PhoneDto;
 import com.godeltech.mastery.employeeservice.exception.ResourceNotFoundException;
+import com.godeltech.mastery.employeeservice.mapping.EmployeeMapper;
+import com.godeltech.mastery.employeeservice.mapping.PhoneMapper;
 import com.godeltech.mastery.employeeservice.service.EmployeeService;
 import com.godeltech.mastery.employeeservice.utils.TestUtil;
 import lombok.var;
@@ -20,12 +23,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 
 import javax.validation.ConstraintViolationException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -49,10 +55,17 @@ class EmployeeControllerTest {
 
     private EmployeeDtoResponse employeeDtoResponse;
     private EmployeeDtoRequest employeeDtoRequest;
+    private PhoneDto phoneDto;
     Long employeeId;
 
     @BeforeEach
     public void setUp() {
+        phoneDto = PhoneDto.builder()
+                .phoneId(1L)
+                .number(297342979)
+                .build();
+        List<PhoneDto> phones = new ArrayList<>();
+        phones.add(phoneDto);
         employeeDtoResponse = EmployeeDtoResponse.builder()
                 .employeeId(1L)
                 .firstName("Artem")
@@ -63,6 +76,7 @@ class EmployeeControllerTest {
                         .build())
                 .jobTittle("IT")
                 .gender(Gender.MALE)
+                .phones(phones)
                 .dateOfBirth(LocalDate.parse("1997-06-25"))
                 .build();
         employeeDtoRequest = EmployeeDtoRequest.builder()
@@ -71,6 +85,7 @@ class EmployeeControllerTest {
                 .departmentId(employeeDtoResponse.getDepartment().getDepartmentId())
                 .jobTittle(employeeDtoResponse.getJobTittle())
                 .gender(employeeDtoResponse.getGender())
+                .phones(phones)
                 .dateOfBirth(employeeDtoResponse.getDateOfBirth())
                 .build();
         employeeId = 1L;
@@ -128,7 +143,7 @@ class EmployeeControllerTest {
     @Test
     void getEmployeeByIdNoEmployee() throws Exception {
         var expectedMessage = "Employee wasn't found by employeeId";
-        when(employeeService.getEmployeeById(employeeId)).thenThrow(new ResourceNotFoundException(Employee.class,"employeeId",employeeId));
+        when(employeeService.getEmployeeById(employeeId)).thenThrow(new ResourceNotFoundException(Employee.class, "employeeId", employeeId));
 
         TestUtil.getEmployeeById(mockMvc, employeeId)
                 .andExpect(status().isNotFound())
@@ -170,7 +185,7 @@ class EmployeeControllerTest {
         var expectedMessage = "{employee.validation.gender.notNull}";
         employeeDtoRequest.setGender(null);
 
-       TestUtil.saveEmployee(mockMvc, objectMapper.writeValueAsString(employeeDtoRequest))
+        TestUtil.saveEmployee(mockMvc, objectMapper.writeValueAsString(employeeDtoRequest))
                 .andExpect(status().isBadRequest())
                 .andExpect(result -> assertTrue(result.getResolvedException() instanceof MethodArgumentNotValidException))
                 .andExpect(result -> assertTrue(result.getResolvedException().getMessage().contains(expectedMessage)));
@@ -186,7 +201,7 @@ class EmployeeControllerTest {
         when(employeeService.update(employeeId, employeeDtoRequest)).thenReturn(expected);
 
         var actual = TestUtil.updateEmployee(mockMvc,
-                        objectMapper.writeValueAsString(employeeDtoRequest),employeeId)
+                        objectMapper.writeValueAsString(employeeDtoRequest), employeeId)
                 .andExpect(status().isOk())
                 .andReturn().getResponse().getContentAsString();
 
@@ -197,16 +212,16 @@ class EmployeeControllerTest {
     @Test
     void updateEmployeeNoEmployeeWithId() throws Exception {
         var expectedMessage = "Employee wasn't found by employeeId";
-        when(employeeService.update(employeeId, employeeDtoRequest)).thenThrow(new ResourceNotFoundException(Employee.class,"employeeId",employeeId));
+        when(employeeService.update(employeeId, employeeDtoRequest)).thenThrow(new ResourceNotFoundException(Employee.class, "employeeId", employeeId));
 
-            var object =TestUtil.updateEmployee(mockMvc,
-                            objectMapper.writeValueAsString(employeeDtoRequest), employeeId)
-                    .andExpect(status().isNotFound())
-                    .andExpect(result -> assertTrue(result.getResolvedException() instanceof ResourceNotFoundException))
-                    .andExpect(result -> assertTrue(result.getResolvedException().getMessage().contains(expectedMessage)))
-                    .andReturn().getResponse().getContentAsString();
+        var object = TestUtil.updateEmployee(mockMvc,
+                        objectMapper.writeValueAsString(employeeDtoRequest), employeeId)
+                .andExpect(status().isNotFound())
+                .andExpect(result -> assertTrue(result.getResolvedException() instanceof ResourceNotFoundException))
+                .andExpect(result -> assertTrue(result.getResolvedException().getMessage().contains(expectedMessage)))
+                .andReturn().getResponse().getContentAsString();
 
-            verify(employeeService).update(employeeId, employeeDtoRequest);
+        verify(employeeService).update(employeeId, employeeDtoRequest);
 
     }
 
@@ -243,7 +258,7 @@ class EmployeeControllerTest {
     @Test
     void deleteEmployee() throws Exception {
 
-        TestUtil.deleteEmployee(mockMvc,employeeId)
+        TestUtil.deleteEmployee(mockMvc, employeeId)
                 .andExpect(status().isOk());
 
         verify(employeeService).deleteById(employeeId);

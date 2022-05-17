@@ -4,8 +4,6 @@ import com.godeltech.mastery.employeeservice.clients.DepartmentApiClient;
 import com.godeltech.mastery.employeeservice.dto.DepartmentDtoResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.cache.annotation.Cacheable;
-import org.springframework.stereotype.Component;
 
 @RequiredArgsConstructor
 @Slf4j
