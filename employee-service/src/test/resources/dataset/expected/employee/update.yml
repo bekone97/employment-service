@@ -1,0 +1,10 @@
+employee:
+  - employee_id: 1
+    first_name: "Artem"
+    last_name: "Myachin"
+    department_id: 1
+    job_tittle: "sales"
+    date_Of_Birth: "1997-06-25"
+    gender: "FEMALE"
+
+

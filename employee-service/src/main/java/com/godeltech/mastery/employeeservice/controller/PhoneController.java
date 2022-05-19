@@ -25,6 +25,7 @@ public class PhoneController {
     }
 
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     public PhoneDto savePhone(@PathVariable Long employeeId,
                               @RequestBody PhoneDto phoneDto){
         log.info("Save new phone:{} for employee with id:{}",phoneDto,employeeId);
@@ -32,6 +33,7 @@ public class PhoneController {
     }
 
     @PutMapping("/{phoneId}")
+    @ResponseStatus(HttpStatus.OK)
     public PhoneDto updatePhone(@PathVariable Long employeeId,
                                 @PathVariable Long phoneId,
                                 @RequestBody PhoneDto phoneDto){
@@ -40,6 +42,7 @@ public class PhoneController {
     }
 
     @DeleteMapping("/{phoneId}")
+    @ResponseStatus(HttpStatus.OK)
     public void deletePhone(@PathVariable Long phoneId,
                             @PathVariable Long employeeId){
         log.info("Delete phone with id:{}",phoneId);

@@ -1,6 +1,7 @@
 package com.godeltech.mastery.employeeservice.service.impl;
 
 import com.godeltech.mastery.employeeservice.dao.PhoneRepository;
+import com.godeltech.mastery.employeeservice.dao.entity.Employee;
 import com.godeltech.mastery.employeeservice.dao.entity.Phone;
 import com.godeltech.mastery.employeeservice.dto.PhoneDto;
 import com.godeltech.mastery.employeeservice.exception.NotUniqueResourceException;
@@ -53,13 +54,13 @@ public class PhoneServiceImpl implements PhoneService {
     public PhoneDto update(Long phoneId, PhoneDto phoneDto, Long employeeId) {
         log.debug("Update phone:{} with phoneId:{} of employee:{}", phoneDto, phoneId, employeeId);
         if (phoneRepository.existsPhoneByNumber(phoneDto.getNumber())) {
-            throw new NotUniqueResourceException(Phone.class,"number",phoneDto.getPhoneId());
+            throw new NotUniqueResourceException(Phone.class,"number",phoneDto.getNumber());
         }
         return phoneRepository.findPhoneByEmployeeEmployeeIdAndPhoneId(employeeId, phoneId)
                 .map(phoneEntity -> phoneMapper.mergePhone(phoneEntity,phoneDto))
                 .map(phoneRepository::save)
                 .map(phoneMapper::mapToPhoneDto)
-                .orElseThrow(() -> new ResourceNotFoundException(Phone.class, "phoneId", phoneId));
+                .orElseThrow(() -> new ResourceNotFoundException(Phone.class, "phoneId", phoneId, Employee.class,"employeeId",employeeId));
     }
 
     @Override
@@ -67,7 +68,7 @@ public class PhoneServiceImpl implements PhoneService {
     public void deleteById(Long phoneId, Long employeeId) {
         log.debug("Deleting phone by phoneId:{} and employeeId:{}", phoneId, employeeId);
         var phone = phoneRepository.findPhoneByEmployeeEmployeeIdAndPhoneId(employeeId, phoneId)
-                .orElseThrow(() -> new ResourceNotFoundException(Phone.class, "phoneId", phoneId));
+                .orElseThrow(() -> new ResourceNotFoundException(Phone.class, "phoneId", phoneId, Employee.class,"employeeId",employeeId));
         phoneRepository.deleteById(phone.getPhoneId());
     }
 }

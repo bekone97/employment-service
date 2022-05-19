@@ -1,0 +1,17 @@
+employee:
+  - employee_id: 1
+    first_name: "Artem"
+    last_name: "Myachin"
+    department_id: 1
+    job_tittle: "sales"
+    date_Of_Birth: "1997-06-25"
+    gender: "MALE"
+  - employee_id: 2
+    first_name: "Sasha"
+    last_name: "Borta"
+    job_tittle: "sales"
+    department_id: 1
+    date_Of_Birth: "1997-06-25"
+    gender: "MALE"
+
+

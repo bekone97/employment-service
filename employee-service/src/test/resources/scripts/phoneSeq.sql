@@ -1,0 +1,1 @@
+ALTER SEQUENCE phone_phone_id_seq RESTART WITH 2;

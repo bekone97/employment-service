@@ -1,0 +1,9 @@
+phone:
+  - phone_id: 1
+    number: 297342979
+    emp_id: 1
+  - phone_id: 2
+    number: 287945678
+    emp_id: 2
+
+
