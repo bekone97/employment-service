@@ -45,8 +45,8 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     public List<EmployeeDtoResponse> getEmployees() {
         log.debug("Get all employees");
-        var employees = employeeRepository.findAll();
-        return employeeRepository.findAll().stream()
+        var employees =employeeRepository.findAll();
+        return employees.stream()
                 .map(employee -> employeeMapper.mapToEmployeeDtoResponse(employee, departmentApiClient.getDepartmentDtoById(employee.getDepartmentId())))
                 .collect(Collectors.toList());
 

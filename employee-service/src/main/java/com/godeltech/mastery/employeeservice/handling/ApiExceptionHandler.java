@@ -34,7 +34,7 @@ public class ApiExceptionHandler {
     }
     @ExceptionHandler(value = NotUniqueResourceException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ApiErrorResponse notUniqueResourceExceptionHandler(HttpServletRequest request, ResourceNotFoundException exception) {
+    public ApiErrorResponse notUniqueResourceExceptionHandler(HttpServletRequest request, NotUniqueResourceException exception) {
         log.error("The {}.The value is already exists : {} and url of request : {}",
                 exception.getClass().getSimpleName(),exception.getMessage(),request.getRequestURL());
         return new ApiErrorResponse(exception.getMessage());

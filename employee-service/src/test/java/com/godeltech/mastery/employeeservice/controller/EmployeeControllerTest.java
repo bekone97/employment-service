@@ -60,7 +60,7 @@ class EmployeeControllerTest {
 
     @BeforeEach
     public void setUp() {
-        phoneDto = PhoneDto.builder()
+        PhoneDto phoneDto = PhoneDto.builder()
                 .phoneId(1L)
                 .number(297342979)
                 .build();
@@ -214,12 +214,11 @@ class EmployeeControllerTest {
         var expectedMessage = "Employee wasn't found by employeeId";
         when(employeeService.update(employeeId, employeeDtoRequest)).thenThrow(new ResourceNotFoundException(Employee.class, "employeeId", employeeId));
 
-        var object = TestUtil.updateEmployee(mockMvc,
+         TestUtil.updateEmployee(mockMvc,
                         objectMapper.writeValueAsString(employeeDtoRequest), employeeId)
                 .andExpect(status().isNotFound())
                 .andExpect(result -> assertTrue(result.getResolvedException() instanceof ResourceNotFoundException))
-                .andExpect(result -> assertTrue(result.getResolvedException().getMessage().contains(expectedMessage)))
-                .andReturn().getResponse().getContentAsString();
+                .andExpect(result -> assertTrue(result.getResolvedException().getMessage().contains(expectedMessage)));
 
         verify(employeeService).update(employeeId, employeeDtoRequest);
 

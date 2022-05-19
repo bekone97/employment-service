@@ -1,0 +1,1 @@
+ALTER SEQUENCE employee_employee_id_seq RESTART WITH 2;

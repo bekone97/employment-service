@@ -12,7 +12,7 @@ services:
         - CLIENT_DEPARTMENT_BASE_URL=http://department-service:8082
         - KAFKA_BOOTSTRAP_SERVER=broker:29092
         - SPRING_KAFKA_CONSUMER_BOOTSTRAP-SERVERS=broker:29092
-
+        - LOGS=/123
     depends_on:
         - db
         - broker
