@@ -7,7 +7,8 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface PhoneRepository extends JpaRepository<Phone,Long> {
+public interface PhoneRepository extends JpaRepository<Phone, Long> {
     Optional<Phone> findPhoneByEmployeeEmployeeIdAndPhoneId(Long employeeId, Long phoneId);
+
     boolean existsPhoneByNumber(int number);
 }

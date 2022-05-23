@@ -16,20 +16,20 @@ public class EmployeeMapperImpl implements EmployeeMapper {
 
     public EmployeeMapperImpl(ModelMapper modelMapper) {
         this.modelMapper = modelMapper;
-        var propertyMapperEmployee = this.modelMapper.createTypeMap(EmployeeDtoRequest.class,Employee.class);
+        var propertyMapperEmployee = this.modelMapper.createTypeMap(EmployeeDtoRequest.class, Employee.class);
         propertyMapperEmployee.addMappings(mapping -> mapping.skip(Employee::setEmployeeId));
     }
 
     @Override
     public Employee mapToEmployee(EmployeeDtoRequest employeeDtoRequest) {
-      var employee=modelMapper.map(employeeDtoRequest,Employee.class);
-      employee.getPhones().forEach(phone -> phone.setEmployee(employee));
-      return employee;
+        var employee = modelMapper.map(employeeDtoRequest, Employee.class);
+        employee.getPhones().forEach(phone -> phone.setEmployee(employee));
+        return employee;
     }
 
     @Override
     public Employee mapToEmployee(EmployeeDtoRequest employeeDtoRequest, Long employeeId) {
-        var employee= modelMapper.map(employeeDtoRequest,Employee.class);
+        var employee = modelMapper.map(employeeDtoRequest, Employee.class);
         employee.setEmployeeId(employeeId);
         employee.getPhones().forEach(phone -> phone.setEmployee(employee));
         return employee;
@@ -38,7 +38,7 @@ public class EmployeeMapperImpl implements EmployeeMapper {
 
     @Override
     public EmployeeDtoResponse mapToEmployeeDtoResponse(Employee employee, DepartmentDtoResponse departmentDtoResponse) {
-        var employeeDtoResponse = modelMapper.map(employee,EmployeeDtoResponse.class);
+        var employeeDtoResponse = modelMapper.map(employee, EmployeeDtoResponse.class);
         employeeDtoResponse.setDepartment(departmentDtoResponse);
         return employeeDtoResponse;
     }

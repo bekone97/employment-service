@@ -17,7 +17,7 @@ public class JwtAuthenticationFailureHandler implements AuthenticationFailureHan
     public void onAuthenticationFailure(HttpServletRequest request,
                                         HttpServletResponse response,
                                         AuthenticationException exception) {
-        log.error("Rejected access : Unauthorized",exception);
+        log.error("Rejected access : Unauthorized", exception);
         throw new JwtAuthenticationException(exception.getMessage());
     }
 }

@@ -10,7 +10,6 @@ import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 
 @Slf4j
 @Component
@@ -21,8 +20,8 @@ public class JwtAuthenticationFailureHandler implements AuthenticationFailureHan
     @Override
     public void onAuthenticationFailure(HttpServletRequest request,
                                         HttpServletResponse response,
-                                        AuthenticationException exception){
-        log.error("Rejected access : Unauthorized",exception);
+                                        AuthenticationException exception) {
+        log.error("Rejected access : Unauthorized", exception);
         throw new JwtAuthenticationException(exception.getMessage());
     }
 }

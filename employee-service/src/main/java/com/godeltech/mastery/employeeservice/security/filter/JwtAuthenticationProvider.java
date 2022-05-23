@@ -18,7 +18,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 public class JwtAuthenticationProvider extends AbstractUserDetailsAuthenticationProvider {
 
     @Value("${app.jwt.secret}")
-    private  String SECRET_KEY;
+    private String SECRET_KEY;
 
     @Override
     public boolean supports(Class<?> authentication) {
@@ -40,7 +40,7 @@ public class JwtAuthenticationProvider extends AbstractUserDetailsAuthentication
         Algorithm algorithm = Algorithm.HMAC256(SECRET_KEY.getBytes());
         JWTVerifier verifier = JWT.require(algorithm).build();
         DecodedJWT decodedJWT = verifier.verify(token);
-        return new AuthenticatedUser(decodedJWT.getSubject(),decodedJWT.getClaim("roles").asString(),token);
+        return new AuthenticatedUser(decodedJWT.getSubject(), decodedJWT.getClaim("roles").asString(), token);
     }
 
 }

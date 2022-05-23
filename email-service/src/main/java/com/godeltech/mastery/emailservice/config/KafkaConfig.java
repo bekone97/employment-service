@@ -83,7 +83,7 @@ public class KafkaConfig {
         factory.setReplyTemplate(replyKafkaTemplate());
         factory.setMessageConverter(converter());
         factory.setCommonErrorHandler(new DefaultErrorHandler(new DeadLetterPublishingRecoverer(replyKafkaTemplate()),
-                new FixedBackOff(0,1L)));
+                new FixedBackOff(0, 1L)));
         return factory;
     }
 

@@ -6,7 +6,6 @@ import com.godeltech.mastery.securityservice.service.JWTService;
 import com.godeltech.mastery.securityservice.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -34,14 +33,13 @@ public class JwtLoginFilter extends UsernamePasswordAuthenticationFilter {
     private final JWTService jwtService;
 
 
-
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
             throws AuthenticationException {
         String username = request.getParameter(SECURITY_USERNAME_KEY);
         String password = request.getParameter(SECURITY_PASSWORD_KEY);
-        log.info("Username is :{} and password is :{}",username,password);
-        return new UsernamePasswordAuthenticationToken(username,password);
+        log.info("Username is :{} and password is :{}", username, password);
+        return new UsernamePasswordAuthenticationToken(username, password);
     }
 
     @Override
@@ -53,6 +51,6 @@ public class JwtLoginFilter extends UsernamePasswordAuthenticationFilter {
         User user = userService.getUserByUsername(username);
         Map<String, String> tokens = jwtService.createAccessAndRefreshTokens(user);
         response.setContentType(APPLICATION_JSON_VALUE);
-        new ObjectMapper().writeValue(response.getOutputStream(),tokens);
+        new ObjectMapper().writeValue(response.getOutputStream(), tokens);
     }
 }

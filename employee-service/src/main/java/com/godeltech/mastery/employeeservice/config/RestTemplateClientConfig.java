@@ -17,7 +17,7 @@ import org.springframework.web.util.DefaultUriBuilderFactory;
 
 import java.util.ArrayList;
 
-@ConditionalOnProperty(name="client.department",havingValue = "rest")
+@ConditionalOnProperty(name = "client.department", havingValue = "rest")
 @Configuration
 @RequiredArgsConstructor
 public class RestTemplateClientConfig {
@@ -26,21 +26,22 @@ public class RestTemplateClientConfig {
     private String departmentHttpUrl;
 
     private final SecurityServiceToken securityServiceToken;
+
     @Bean
-    public RestTemplate departmentRestTemplate(){
-        var restTemplate= new RestTemplate();
+    public RestTemplate departmentRestTemplate() {
+        var restTemplate = new RestTemplate();
         restTemplate.setUriTemplateHandler(new DefaultUriBuilderFactory(departmentHttpUrl));
         restTemplate.setErrorHandler(new RestTemplateResponseErrorHandler());
         var interceptors = restTemplate.getInterceptors();
         if (CollectionUtils.isEmpty(interceptors))
-            interceptors=new ArrayList<>();
+            interceptors = new ArrayList<>();
         interceptors.add(new RestTemplateInterceptor(securityServiceToken));
         restTemplate.setInterceptors(interceptors);
         return restTemplate;
     }
 
     @Bean
-    public DepartmentApiClient departmentApiClient(){
+    public DepartmentApiClient departmentApiClient() {
         return new RestTemplateDepartmentClientImpl(departmentRestTemplate());
     }
 }

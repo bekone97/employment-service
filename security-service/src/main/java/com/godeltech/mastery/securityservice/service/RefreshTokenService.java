@@ -7,8 +7,12 @@ import java.time.LocalDateTime;
 
 public interface RefreshTokenService {
     RefreshToken getByRefreshToken(String token);
+
     RefreshToken save(RefreshToken token);
+
     RefreshToken replaceToken(RefreshToken token, User user, LocalDateTime currentDate);
+
     RefreshToken createRefreshToken(User user);
+
     void deactivateRefreshTokensByUserId(Long userId);
 }

@@ -27,7 +27,7 @@ import static com.godeltech.mastery.employeeservice.utils.ConstantUtil.Kafka.REP
 
 
 @Configuration
-@ConditionalOnMissingBean({ ConcurrentKafkaListenerContainerFactory.class})
+@ConditionalOnMissingBean({ConcurrentKafkaListenerContainerFactory.class})
 public class KafkaConfig {
 
     @Value("${kafka.bootstrap.server}")
@@ -75,9 +75,9 @@ public class KafkaConfig {
     }
 
     @Bean
-    public ConcurrentMessageListenerContainer<String,Object> replyListenerContainer(
-            ConcurrentKafkaListenerContainerFactory<String,Object> containerFactory) {
-        ConcurrentMessageListenerContainer<String,Object> repliesContainer =
+    public ConcurrentMessageListenerContainer<String, Object> replyListenerContainer(
+            ConcurrentKafkaListenerContainerFactory<String, Object> containerFactory) {
+        ConcurrentMessageListenerContainer<String, Object> repliesContainer =
                 containerFactory.createContainer(REPLY_TOPIC_EMPLOYEE_CREATION);
         repliesContainer.getContainerProperties().setGroupId(REPLY_TOPIC_EMPLOYEE_CREATION);
         repliesContainer.setAutoStartup(false);

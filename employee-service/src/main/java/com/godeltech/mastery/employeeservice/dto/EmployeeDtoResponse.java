@@ -16,25 +16,25 @@ import java.util.List;
 @NoArgsConstructor
 public class EmployeeDtoResponse {
 
-    @Schema(description = "Employee id, which applied application",example = "1")
+    @Schema(description = "Employee id, which applied application", example = "1")
     private Long employeeId;
 
-    @Schema(description = "Employee first name",example = "Artem")
+    @Schema(description = "Employee first name", example = "Artem")
     private String firstName;
 
-    @Schema(description = "Employee last name",example = "Miachyn")
+    @Schema(description = "Employee last name", example = "Miachyn")
     private String lastName;
 
-    @Schema(description = "Employee department",example = "2")
+    @Schema(description = "Employee department", example = "2")
     private DepartmentDtoResponse department;
 
-    @Schema(description = "Employee job tittle",example = "IT")
+    @Schema(description = "Employee job tittle", example = "IT")
     private String jobTittle;
 
-    @Schema(description = "Employee gender",example = "MALE")
+    @Schema(description = "Employee gender", example = "MALE")
     private Gender gender;
 
-    @Schema(description = "Employee date of birth",example = "2000-04-05")
+    @Schema(description = "Employee date of birth", example = "2000-04-05")
     private LocalDate dateOfBirth;
 
     @Schema(description = "Phone numbers of employee")

@@ -10,7 +10,7 @@ import org.hibernate.annotations.TypeDef;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "user",schema = "jwt")
+@Table(name = "user", schema = "jwt")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

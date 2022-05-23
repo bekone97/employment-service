@@ -24,60 +24,60 @@ import java.util.stream.Collectors;
 public class ApiExceptionHandler {
 
 
-
     @ExceptionHandler(value = ResourceNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ApiErrorResponse resourceNotFoundExceptionHandler(HttpServletRequest request, ResourceNotFoundException exception) {
         log.error("The {}.There is no entity in database : {} and url of request : {}",
-            exception.getClass().getSimpleName(),exception.getMessage(),request.getRequestURL());
+                exception.getClass().getSimpleName(), exception.getMessage(), request.getRequestURL());
         return new ApiErrorResponse(exception.getMessage());
     }
+
     @ExceptionHandler(value = NotUniqueResourceException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ApiErrorResponse notUniqueResourceExceptionHandler(HttpServletRequest request, NotUniqueResourceException exception) {
         log.error("The {}.The value is already exists : {} and url of request : {}",
-                exception.getClass().getSimpleName(),exception.getMessage(),request.getRequestURL());
+                exception.getClass().getSimpleName(), exception.getMessage(), request.getRequestURL());
         return new ApiErrorResponse(exception.getMessage());
     }
 
     @ExceptionHandler(value = {HttpMessageNotReadableException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ApiErrorResponse httpMessageNotReadableExceptionHandler(HttpServletRequest request,HttpMessageNotReadableException exception) {
+    public ApiErrorResponse httpMessageNotReadableExceptionHandler(HttpServletRequest request, HttpMessageNotReadableException exception) {
         log.warn("The {}. Wrong income parameters :{} and url of request: {}",
-               exception.getClass().getSimpleName(),exception.getMessage(),request.getRequestURL());
+                exception.getClass().getSimpleName(), exception.getMessage(), request.getRequestURL());
         return new ApiErrorResponse(exception.getCause().getLocalizedMessage());
     }
 
     @ExceptionHandler(value = IllegalArgumentException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ApiErrorResponse illegalArgumentExceptionHandler(HttpServletRequest request,IllegalArgumentException exception) {
+    public ApiErrorResponse illegalArgumentExceptionHandler(HttpServletRequest request, IllegalArgumentException exception) {
         log.error("The {}. Wrong parameters :{} and url of request: {} ",
-                exception.getClass().getSimpleName(),exception.getMessage(),request.getRequestURL());
+                exception.getClass().getSimpleName(), exception.getMessage(), request.getRequestURL());
         return new ApiErrorResponse(exception.getMessage());
     }
 
     @ExceptionHandler(value = MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ValidationErrorResponse methodArgumentNotValidExceptionHandler(HttpServletRequest request,MethodArgumentNotValidException exception){
+    public ValidationErrorResponse methodArgumentNotValidExceptionHandler(HttpServletRequest request, MethodArgumentNotValidException exception) {
 
-        var errorResponse= new ValidationErrorResponse(exception.getBindingResult().getAllErrors().stream()
-                        .map(FieldError.class::cast)
-                        .map(error->new ValidationMessage(error.getField(),error.getDefaultMessage()))
-                        .collect(Collectors.toList()));
-        log.warn("The{}.Validation messages :{} and url of request :{}" ,
-                exception.getClass().getSimpleName(),errorResponse.getValidationMessages(),request.getRequestURL());
+        var errorResponse = new ValidationErrorResponse(exception.getBindingResult().getAllErrors().stream()
+                .map(FieldError.class::cast)
+                .map(error -> new ValidationMessage(error.getField(), error.getDefaultMessage()))
+                .collect(Collectors.toList()));
+        log.warn("The{}.Validation messages :{} and url of request :{}",
+                exception.getClass().getSimpleName(), errorResponse.getValidationMessages(), request.getRequestURL());
         return errorResponse;
     }
 
     @ExceptionHandler(value = ConstraintViolationException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ValidationErrorResponse constraintViolationExceptionHandler(HttpServletRequest request,ConstraintViolationException exception) {
+    public ValidationErrorResponse constraintViolationExceptionHandler(HttpServletRequest request, ConstraintViolationException exception) {
 
-        var errorResponse= new ValidationErrorResponse(exception.getConstraintViolations().stream()
-                        .map(set->new ValidationMessage(set.getPropertyPath().toString(),set.getMessage()))
-                        .collect(Collectors.toList()));
+        var errorResponse = new ValidationErrorResponse(exception.getConstraintViolations().stream()
+                .map(set -> new ValidationMessage(set.getPropertyPath().toString(), set.getMessage()))
+                .collect(Collectors.toList()));
         log.warn("The {}.Validation messages :{} and url of request :{}",
-               exception.getClass().getSimpleName(),errorResponse.getValidationMessages(),request.getRequestURL());
+                exception.getClass().getSimpleName(), errorResponse.getValidationMessages(), request.getRequestURL());
 
         return errorResponse;
 
@@ -85,16 +85,17 @@ public class ApiExceptionHandler {
 
     @ExceptionHandler(value = ConnectException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public ApiErrorResponse restClientException(HttpServletRequest request,ConnectException exception){
+    public ApiErrorResponse restClientException(HttpServletRequest request, ConnectException exception) {
         log.error("The {}. Wrong parameters :{} and url of request: {} ",
-                exception.getClass().getSimpleName(),exception.getMessage(),request.getRequestURL());
+                exception.getClass().getSimpleName(), exception.getMessage(), request.getRequestURL());
         return new ApiErrorResponse(exception.getMessage());
     }
+
     @ExceptionHandler(value = JwtAuthenticationException.class)
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
-    public ApiErrorResponse jwtAuthenticationExceptionHandler(HttpServletRequest request,ConnectException exception){
+    public ApiErrorResponse jwtAuthenticationExceptionHandler(HttpServletRequest request, ConnectException exception) {
         log.error("The {}. Wrong parameters :{} and url of request: {} ",
-                exception.getClass().getSimpleName(),exception.getMessage(),request.getRequestURL());
+                exception.getClass().getSimpleName(), exception.getMessage(), request.getRequestURL());
         return new ApiErrorResponse(exception.getMessage());
     }
 

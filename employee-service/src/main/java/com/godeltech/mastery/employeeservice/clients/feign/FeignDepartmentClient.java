@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 
-@FeignClient(value = "departmentFeignClient",url = "${client.department.base.url}",configuration = FeignInterceptor.class)
+@FeignClient(value = "departmentFeignClient", url = "${client.department.base.url}", configuration = FeignInterceptor.class)
 public interface FeignDepartmentClient {
 
     @GetMapping("departments/{departmentId}")

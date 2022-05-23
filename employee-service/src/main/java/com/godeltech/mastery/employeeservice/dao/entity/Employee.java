@@ -4,11 +4,10 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.*;
+import org.hibernate.annotations.Type;
+import org.hibernate.annotations.TypeDef;
 
 import javax.persistence.*;
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -17,7 +16,7 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 @TypeDef(name = "postgreSqlEnumType", typeClass = PostgreSqlEnumType.class)
-@Entity(name="employee")
+@Entity(name = "employee")
 public class Employee {
     @Id
     @Column(name = "employee_id")
@@ -44,7 +43,7 @@ public class Employee {
     @Column(name = "date_of_birth")
     private LocalDate dateOfBirth;
 
-    @OneToMany(mappedBy = "employee",cascade = CascadeType.ALL,
+    @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL,
             orphanRemoval = true,
             fetch = FetchType.LAZY)
     private List<Phone> phones;

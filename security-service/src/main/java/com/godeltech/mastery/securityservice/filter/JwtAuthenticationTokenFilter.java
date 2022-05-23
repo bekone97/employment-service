@@ -39,7 +39,7 @@ public class JwtAuthenticationTokenFilter extends AbstractAuthenticationProcessi
             throws IOException, ServletException {
 
         super.successfulAuthentication(request, response, chain, authResult);
-        chain.doFilter(request,response);
+        chain.doFilter(request, response);
     }
 
     @Override
@@ -53,7 +53,7 @@ public class JwtAuthenticationTokenFilter extends AbstractAuthenticationProcessi
     }
 
 
-    private String getJwtFromRequest(HttpServletRequest request){
+    private String getJwtFromRequest(HttpServletRequest request) {
         String authorizationHeader = request.getHeader(AUTHORIZATION);
         if (authorizationHeader == null || !authorizationHeader.startsWith(TOKEN_PREFIX)) {
             throw new AuthenticationCredentialsNotFoundException("No JWT token found in request headers");

@@ -10,6 +10,7 @@ import javax.persistence.criteria.Root;
 public interface PredicateType<T> {
 
     Operation getOperation();
+
     Predicate getPredicate(SearchCriteria searchCriteria, Root<T> root, CriteriaBuilder criteriaBuilder);
 
 }

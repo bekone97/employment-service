@@ -13,7 +13,7 @@ public class LogController {
     Logger logger = LoggerFactory.getLogger("logController");
 
     @GetMapping
-    public String testActuator(){
+    public String testActuator() {
         logger.debug("Debug level log message");
         logger.info("Info level log message");
         logger.warn("Warn level log message");

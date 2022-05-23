@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class SecurityServiceTokenImpl implements SecurityServiceToken {
-    public String getToken(){
+    public String getToken() {
         var principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         AuthenticatedUser user = (AuthenticatedUser) principal;
         return user.getToken();

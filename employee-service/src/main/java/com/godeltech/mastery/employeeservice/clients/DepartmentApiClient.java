@@ -5,7 +5,7 @@ import org.springframework.cache.annotation.Cacheable;
 
 public interface DepartmentApiClient {
 
-    @Cacheable(value = "departments",key = "#departmentId")
+    @Cacheable(value = "departments", key = "#departmentId")
     DepartmentDtoResponse getDepartmentDtoById(Long departmentId);
 
 }

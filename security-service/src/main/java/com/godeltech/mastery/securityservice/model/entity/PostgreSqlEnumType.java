@@ -15,7 +15,7 @@ public class PostgreSqlEnumType extends EnumType {
                             SharedSessionContractImplementor session) throws HibernateException, SQLException {
 
         Object name = Optional.ofNullable(value)
-                .map(val->((Enum) value).name())
+                .map(val -> ((Enum) value).name())
                 .orElseGet(null);
 
         st.setObject(index, name, Types.OTHER);

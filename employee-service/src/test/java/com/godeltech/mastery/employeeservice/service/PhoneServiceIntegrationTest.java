@@ -36,6 +36,7 @@ import static org.mockito.Mockito.*;
 @ActiveProfiles("test")
 class PhoneServiceIntegrationTest extends DatabaseContainerInitializer {
 
+
     @MockBean
     private EmployeeService employeeService;
     @Autowired
@@ -47,28 +48,30 @@ class PhoneServiceIntegrationTest extends DatabaseContainerInitializer {
     private EmployeeDtoResponse employee;
     private Phone phone;
     private PhoneDto expected;
+
+
     @BeforeEach
     public void setUp() {
-    phone=Phone.builder()
-            .phoneId(1L)
-            .number(297342979)
-            .employee(Employee.builder()
-                    .employeeId(1L)
-                    .build())
-            .build();
-    employee=EmployeeDtoResponse.builder()
-            .employeeId(2L)
-            .build();
-    expected=phoneMapper.mapToPhoneDto(phone);
+        phone = Phone.builder()
+                .phoneId(1L)
+                .number(297342979)
+                .employee(Employee.builder()
+                        .employeeId(1L)
+                        .build())
+                .build();
+        employee = EmployeeDtoResponse.builder()
+                .employeeId(2L)
+                .build();
+        expected = phoneMapper.mapToPhoneDto(phone);
     }
 
     @AfterEach
-    public void tearDown(){
-        phoneService=null;
-        phone=null;
-        employee=null;
-        expected=null;
+    public void tearDown() {
+        phone = null;
+        employee = null;
+        expected = null;
     }
+
     @Test
     void getPhonesByEmployee() {
         List<PhoneDto> phones = new ArrayList<>();
@@ -80,103 +83,126 @@ class PhoneServiceIntegrationTest extends DatabaseContainerInitializer {
                 .findFirst()
                 .get();
 
-        assertEquals(expected,actual);
+        assertEquals(expected, actual);
         verify(employeeService).getEmployeeById(1L);
     }
+
     @Test
     @DataSet(value = {"dataset/init/employee/init.yml", "dataset/init/phone/init.yml"},
-            useSequenceFiltering = false,cleanBefore = true,
-    executeScriptsBefore = {"scripts/phoneSeq.sql"})
+            useSequenceFiltering = false,
+            executeScriptsBefore = {"scripts/phoneSeq.sql"},
+            executeScriptsAfter = {"scripts/cleanPhone.sql", "scripts/cleanEmployee.sql"})
     @ExpectedDataSet(value = "dataset/expected/phone/savePhone.yml")
     void save() {
-        expected= PhoneDto.builder()
+        expected = PhoneDto.builder()
                 .number(289372678)
                 .build();
         when(employeeService.getEmployeeById(1L)).thenReturn(employee);
 
 
-        var actual = phoneService.save(expected,1L);
+        var actual = phoneService.save(expected, 1L);
         expected.setPhoneId(2L);
 
-        assertEquals(expected,actual);
+        assertEquals(expected, actual);
 
 
         verify(employeeService).getEmployeeById(1L);
     }
+
     @Test
-    @DataSet(value = {"dataset/init/employee/init.yml", "dataset/init/phone/init.yml"},useSequenceFiltering = false,cleanBefore = true)
+    @DataSet(value = {"dataset/init/employee/init.yml", "dataset/init/phone/init.yml"},
+            useSequenceFiltering = false,
+            executeScriptsAfter = {"scripts/cleanPhone.sql", "scripts/cleanEmployee.sql"})
     void saveFail() {
         expected.setPhoneId(1L);
         when(employeeService.getEmployeeById(2L)).thenReturn(employee);
 
 
         var actual = assertThrows(NotUniqueResourceException.class,
-                ()->phoneService.save(expected,2L));
+                () -> phoneService.save(expected, 2L));
 
-        assertTrue(actual.getMessage().contains("Phone is already exists by number="+expected.getNumber()));
+        assertTrue(actual.getMessage().contains("Phone is already exists by number=" + expected.getNumber()));
 
 
-        verify(employeeService,never()).getEmployeeById(2L);
+        verify(employeeService, never()).getEmployeeById(2L);
     }
 
     @Test
-    @DataSet(value = {"dataset/init/employee/init.yml", "dataset/init/phone/init.yml"},useSequenceFiltering = false,cleanBefore = true)
+    @DataSet(value = {"dataset/init/employee/init.yml", "dataset/init/phone/init.yml"},
+            useSequenceFiltering = false,
+            executeScriptsAfter = {"scripts/cleanPhone.sql", "scripts/cleanEmployee.sql"})
     @ExpectedDataSet(value = "dataset/expected/phone/updatePhone.yml")
     void update() {
         int changingNumber = 792526677;
         expected.setNumber(changingNumber);
 
-        var actual= phoneService.update(1L,expected,1L);
+        var actual = phoneService.update(1L, PhoneDto.builder()
+                .number(changingNumber)
+                .build(), 1L);
 
-        assertEquals(expected,actual);
+        assertEquals(expected, actual);
     }
+
     @Test
-    @DataSet(value = {"dataset/init/employee/init.yml", "dataset/init/phone/init.yml"},useSequenceFiltering = false)
+    @DataSet(value = {"dataset/init/employee/init.yml", "dataset/init/phone/init.yml"},
+            useSequenceFiltering = false,
+            executeScriptsAfter = {"scripts/cleanPhone.sql", "scripts/cleanEmployee.sql"})
     void updateFail() {
 
-        var actual=assertThrows(NotUniqueResourceException.class,
-                ()->phoneService.update(1L,expected,1L));
+        var actual = assertThrows(NotUniqueResourceException.class,
+                () -> phoneService.update(1L, expected, 1L));
 
-        assertTrue(actual.getMessage().contains("Phone is already exists by number="+expected.getNumber()));
+        assertTrue(actual.getMessage().contains("Phone is already exists by number=" + expected.getNumber()));
     }
+
     @Test
-    @DataSet(value = {"dataset/init/employee/init.yml", "dataset/init/phone/init.yml"},useSequenceFiltering = false,cleanBefore = true)
+    @DataSet(value = {"dataset/init/employee/init.yml", "dataset/init/phone/init.yml"},
+            useSequenceFiltering = false,
+            executeScriptsAfter = {"scripts/cleanPhone.sql", "scripts/cleanEmployee.sql"})
     void updateFailSecond() {
         expected.setNumber(283783273);
-        var actual=assertThrows(ResourceNotFoundException.class,
-                ()->phoneService.update(5L,expected,2L));
+        var actual = assertThrows(ResourceNotFoundException.class,
+                () -> phoneService.update(5L, expected, 2L));
 
         assertTrue(actual.getMessage().contains("Phone wasn't found by phoneId=5 from Employee with employeeId=2"));
     }
 
 
     @Test
-    @DataSet(value = {"dataset/init/employee/init.yml", "dataset/init/phone/init.yml"},useSequenceFiltering = false,
-            cleanBefore = true)
+    @DataSet(value = {"dataset/init/employee/init.yml", "dataset/init/phone/init.yml"},
+            useSequenceFiltering = false,
+            cleanBefore = true,
+            executeScriptsAfter = {"scripts/cleanPhone.sql", "scripts/cleanEmployee.sql"})
     @ExpectedDataSet(value = {"dataset/expected/phone/delete.yml"})
     void deleteById() {
 
-        phoneService.deleteById(1L,1L);
+        phoneService.deleteById(1L, 1L);
 
     }
+
     @Test
-    @DataSet(value = {"dataset/init/employee/init.yml", "dataset/init/phone/init.yml"},useSequenceFiltering = false,cleanBefore = true)
+    @DataSet(value = {"dataset/init/employee/init.yml", "dataset/init/phone/init.yml"},
+            useSequenceFiltering = false,
+            executeScriptsAfter = {"scripts/cleanPhone.sql", "scripts/cleanEmployee.sql"})
     void deleteByIdFail() {
 
 
-        var actual=assertThrows(ResourceNotFoundException.class,
-                ()->phoneService.deleteById(5L,2L));
+        var actual = assertThrows(ResourceNotFoundException.class,
+                () -> phoneService.deleteById(5L, 2L));
 
         assertTrue(actual.getMessage().contains("Phone wasn't found by phoneId=5 from Employee with employeeId=2"));
 
     }
+
     @Test
-    @DataSet(value = {"dataset/init/employee/init.yml", "dataset/init/phone/init.yml"},useSequenceFiltering = false,cleanBefore = true)
+    @DataSet(value = {"dataset/init/employee/init.yml", "dataset/init/phone/init.yml"},
+            useSequenceFiltering = false,
+            executeScriptsAfter = {"scripts/cleanPhone.sql", "scripts/cleanEmployee.sql"})
     void deleteByIdFailSecond() {
 
 
-        var actual=assertThrows(ResourceNotFoundException.class,
-                ()->phoneService.deleteById(2L,5L));
+        var actual = assertThrows(ResourceNotFoundException.class,
+                () -> phoneService.deleteById(2L, 5L));
 
         assertTrue(actual.getMessage().contains("Phone wasn't found by phoneId=2 from Employee with employeeId=5"));
 

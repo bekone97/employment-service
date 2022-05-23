@@ -42,7 +42,7 @@ public class PhoneServiceImpl implements PhoneService {
     public PhoneDto save(PhoneDto phoneDto, Long employeeId) {
         log.debug("Save new phone:{} of employee:{}", phoneDto, employeeId);
         if (phoneRepository.existsPhoneByNumber(phoneDto.getNumber())) {
-            throw new NotUniqueResourceException(Phone.class,"number",phoneDto.getNumber());
+            throw new NotUniqueResourceException(Phone.class, "number", phoneDto.getNumber());
         }
         employeeService.getEmployeeById(employeeId);
         var phone = phoneRepository.save(phoneMapper.mapToPhone(phoneDto, employeeId));
@@ -54,13 +54,13 @@ public class PhoneServiceImpl implements PhoneService {
     public PhoneDto update(Long phoneId, PhoneDto phoneDto, Long employeeId) {
         log.debug("Update phone:{} with phoneId:{} of employee:{}", phoneDto, phoneId, employeeId);
         if (phoneRepository.existsPhoneByNumber(phoneDto.getNumber())) {
-            throw new NotUniqueResourceException(Phone.class,"number",phoneDto.getNumber());
+            throw new NotUniqueResourceException(Phone.class, "number", phoneDto.getNumber());
         }
         return phoneRepository.findPhoneByEmployeeEmployeeIdAndPhoneId(employeeId, phoneId)
-                .map(phoneEntity -> phoneMapper.mergePhone(phoneEntity,phoneDto))
+                .map(phoneEntity -> phoneMapper.mergePhone(phoneEntity, phoneDto))
                 .map(phoneRepository::save)
                 .map(phoneMapper::mapToPhoneDto)
-                .orElseThrow(() -> new ResourceNotFoundException(Phone.class, "phoneId", phoneId, Employee.class,"employeeId",employeeId));
+                .orElseThrow(() -> new ResourceNotFoundException(Phone.class, "phoneId", phoneId, Employee.class, "employeeId", employeeId));
     }
 
     @Override
@@ -68,7 +68,7 @@ public class PhoneServiceImpl implements PhoneService {
     public void deleteById(Long phoneId, Long employeeId) {
         log.debug("Deleting phone by phoneId:{} and employeeId:{}", phoneId, employeeId);
         var phone = phoneRepository.findPhoneByEmployeeEmployeeIdAndPhoneId(employeeId, phoneId)
-                .orElseThrow(() -> new ResourceNotFoundException(Phone.class, "phoneId", phoneId, Employee.class,"employeeId",employeeId));
+                .orElseThrow(() -> new ResourceNotFoundException(Phone.class, "phoneId", phoneId, Employee.class, "employeeId", employeeId));
         phoneRepository.deleteById(phone.getPhoneId());
     }
 }

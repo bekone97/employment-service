@@ -5,6 +5,8 @@ import com.godeltech.mastery.employeeservice.dto.PhoneDto;
 
 public interface PhoneMapper {
     PhoneDto mapToPhoneDto(Phone phone);
+
     Phone mapToPhone(PhoneDto phoneDto, Long employeeId);
-    Phone mergePhone(Phone phone,PhoneDto phoneDto);
+
+    Phone mergePhone(Phone phone, PhoneDto phoneDto);
 }

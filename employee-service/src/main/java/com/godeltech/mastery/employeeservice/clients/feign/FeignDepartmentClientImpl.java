@@ -13,7 +13,7 @@ public class FeignDepartmentClientImpl implements DepartmentApiClient {
 
     @Override
     public DepartmentDtoResponse getDepartmentDtoById(Long departmentId) {
-        log.info("Get department by id:{}",departmentId);
+        log.info("Get department by id:{}", departmentId);
         return feignDepartmentClient.getDepartmentById(departmentId);
     }
 }

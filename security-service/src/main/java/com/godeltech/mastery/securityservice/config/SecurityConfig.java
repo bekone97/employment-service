@@ -41,9 +41,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         auth.userDetailsService(userService)
                 .passwordEncoder(passwordEncoder);
     }
+
     @Bean
     @Override
-    public AuthenticationManager authenticationManager(){
+    public AuthenticationManager authenticationManager() {
         return new ProviderManager(Collections.singletonList(jwtAuthenticationProvider()));
     }
 
@@ -52,7 +53,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    public JwtAuthenticationTokenFilter jwtAuthenticationTokenFilterBean(){
+    public JwtAuthenticationTokenFilter jwtAuthenticationTokenFilterBean() {
 
         final JwtAuthenticationTokenFilter authenticationTokenFilter =
                 new JwtAuthenticationTokenFilter(new AntPathRequestMatcher("/users"));
@@ -60,12 +61,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         authenticationTokenFilter.setAuthenticationSuccessHandler(new JwtAuthenticationSuccessHandler());
         authenticationTokenFilter.setAuthenticationFailureHandler(new JwtAuthenticationFailureHandler(objectMapper));
 
-    return authenticationTokenFilter;
+        return authenticationTokenFilter;
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        JwtLoginFilter loginFilter = new JwtLoginFilter(userService,jwtService);
+        JwtLoginFilter loginFilter = new JwtLoginFilter(userService, jwtService);
         loginFilter.setFilterProcessesUrl("/users/authenticate");
         http.csrf().disable()
                 .sessionManagement().sessionCreationPolicy(STATELESS)

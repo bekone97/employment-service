@@ -6,6 +6,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.List;
+
 @RequiredArgsConstructor
 public class AuthenticatedUser implements UserDetails {
     private final String usrename;

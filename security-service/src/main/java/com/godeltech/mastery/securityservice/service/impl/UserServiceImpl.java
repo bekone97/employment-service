@@ -21,7 +21,7 @@ import java.util.List;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-public class UserServiceImpl implements UserService{
+public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
 
@@ -36,25 +36,25 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public User getById(Long id) {
-        log.debug("Getting user by id:{}",id);
+        log.debug("Getting user by id:{}", id);
         return userRepository.findById(id)
-                .orElseThrow(()->{
-                    log.error("User wasn't found by id :{}",id);
-                   return new ResourceNotFoundException(User.class,"username",id);
+                .orElseThrow(() -> {
+                    log.error("User wasn't found by id :{}", id);
+                    return new ResourceNotFoundException(User.class, "username", id);
                 });
     }
 
     @Override
     public void deleteById(Long id) {
-        log.debug("Deleting user by id:{}",id);
-        var user =getById(id);
+        log.debug("Deleting user by id:{}", id);
+        var user = getById(id);
         userRepository.deleteById(user.getId());
     }
 
     @Override
     public User save(User user) {
-        if(userRepository.existsUserByUsername(user.getUsername()))
-            throw new NotUniqueResourceException(User.class,"username",user.getUsername());
+        if (userRepository.existsUserByUsername(user.getUsername()))
+            throw new NotUniqueResourceException(User.class, "username", user.getUsername());
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.save(user);
     }
@@ -62,9 +62,9 @@ public class UserServiceImpl implements UserService{
     @Override
     public User getUserByUsername(String username) {
         return userRepository.findByUsername(username)
-                .orElseThrow(()->{
-                    log.error("User not found by username:{}",username);
-                    return new ResourceNotFoundException(User.class,"username",username);
+                .orElseThrow(() -> {
+                    log.error("User not found by username:{}", username);
+                    return new ResourceNotFoundException(User.class, "username", username);
                 });
     }
 

@@ -21,8 +21,8 @@ public class UserController {
     private final JWTService jwtService;
 
     @PostMapping("/token/refresh")
-    public Map<String,String> refreshToken(@RequestHeader(AUTHORIZATION) String authorizationHeader){
-       return jwtService.createTokensByRefreshTokenHeader(authorizationHeader);
+    public Map<String, String> refreshToken(@RequestHeader(AUTHORIZATION) String authorizationHeader) {
+        return jwtService.createTokensByRefreshTokenHeader(authorizationHeader);
 
     }
 }
