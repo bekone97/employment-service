@@ -18,13 +18,13 @@ import static org.springframework.http.HttpStatus.Series.SERVER_ERROR;
 public class RestTemplateResponseErrorHandler implements ResponseErrorHandler {
     @Override
     public boolean hasError(ClientHttpResponse response) throws IOException {
-        return (response.getStatusCode().series()== CLIENT_ERROR
-        ||response.getStatusCode().series()== SERVER_ERROR);
+        return (response.getStatusCode().series() == CLIENT_ERROR
+                || response.getStatusCode().series() == SERVER_ERROR);
     }
 
     @Override
     public void handleError(ClientHttpResponse response) throws IOException {
-        switch (response.getStatusCode().series()){
+        switch (response.getStatusCode().series()) {
             case SERVER_ERROR:
                 log.error("There was SERVER_ERROR ");
                 throw new ResourceNotFoundException("There was a server error");
@@ -39,16 +39,16 @@ public class RestTemplateResponseErrorHandler implements ResponseErrorHandler {
 
     @Override
     public void handleError(URI url, HttpMethod method, ClientHttpResponse response) throws IOException {
-        switch (response.getStatusCode().series()){
+        switch (response.getStatusCode().series()) {
             case SERVER_ERROR:
-                log.error("There was SERVER_ERROR by url {}",url);
-                throw new ResourceNotFoundException("There was a server error by url:"+url);
+                log.error("There was SERVER_ERROR by url {}", url);
+                throw new ResourceNotFoundException("There was a server error by url:" + url);
             case CLIENT_ERROR:
-                log.error("There was CLIENT_ERROR by url {}:",url);
-                throw new ResourceNotFoundException("There was a client error by url:" +url);
+                log.error("There was CLIENT_ERROR by url {}:", url);
+                throw new ResourceNotFoundException("There was a client error by url:" + url);
             default:
-                log.error("There was unexpected ERROR by url {}:",url);
-                throw new ResourceNotFoundException("An unexpected exception with client by url "+url);
+                log.error("There was unexpected ERROR by url {}:", url);
+                throw new ResourceNotFoundException("An unexpected exception with client by url " + url);
         }
     }
 

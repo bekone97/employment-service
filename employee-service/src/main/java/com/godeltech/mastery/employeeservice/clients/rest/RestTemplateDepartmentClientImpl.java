@@ -16,7 +16,7 @@ public class RestTemplateDepartmentClientImpl implements DepartmentApiClient {
 
     @Override
     public DepartmentDtoResponse getDepartmentDtoById(Long departmentId) {
-        log.info("Get department by id:{}",departmentId);
-        return departmentRestTemplate.getForObject("departments/" + departmentId,DepartmentDtoResponse.class);
+        log.info("Get department by id:{}", departmentId);
+        return departmentRestTemplate.getForObject("departments/" + departmentId, DepartmentDtoResponse.class);
     }
 }

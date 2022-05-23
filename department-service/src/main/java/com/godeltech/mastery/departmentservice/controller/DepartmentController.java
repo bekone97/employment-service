@@ -14,7 +14,6 @@ public class DepartmentController {
     private final DepartmentService departmentService;
 
 
-
     @GetMapping("/{departmentId}")
     @ResponseStatus(HttpStatus.OK)
     public DepartmentDtoResponse getEmployeeById(@PathVariable Long departmentId) {

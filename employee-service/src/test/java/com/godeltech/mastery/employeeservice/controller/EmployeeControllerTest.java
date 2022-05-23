@@ -3,14 +3,11 @@ package com.godeltech.mastery.employeeservice.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.godeltech.mastery.employeeservice.dao.entity.Employee;
 import com.godeltech.mastery.employeeservice.dao.entity.Gender;
-import com.godeltech.mastery.employeeservice.dao.entity.Phone;
 import com.godeltech.mastery.employeeservice.dto.DepartmentDtoResponse;
 import com.godeltech.mastery.employeeservice.dto.EmployeeDtoRequest;
 import com.godeltech.mastery.employeeservice.dto.EmployeeDtoResponse;
 import com.godeltech.mastery.employeeservice.dto.PhoneDto;
 import com.godeltech.mastery.employeeservice.exception.ResourceNotFoundException;
-import com.godeltech.mastery.employeeservice.mapping.EmployeeMapper;
-import com.godeltech.mastery.employeeservice.mapping.PhoneMapper;
 import com.godeltech.mastery.employeeservice.service.EmployeeService;
 import com.godeltech.mastery.employeeservice.utils.TestUtil;
 import lombok.var;
@@ -23,7 +20,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 
 import javax.validation.ConstraintViolationException;
@@ -214,7 +210,7 @@ class EmployeeControllerTest {
         var expectedMessage = "Employee wasn't found by employeeId";
         when(employeeService.update(employeeId, employeeDtoRequest)).thenThrow(new ResourceNotFoundException(Employee.class, "employeeId", employeeId));
 
-         TestUtil.updateEmployee(mockMvc,
+        TestUtil.updateEmployee(mockMvc,
                         objectMapper.writeValueAsString(employeeDtoRequest), employeeId)
                 .andExpect(status().isNotFound())
                 .andExpect(result -> assertTrue(result.getResolvedException() instanceof ResourceNotFoundException))

@@ -98,17 +98,19 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
                 })
                 .forEach(refreshTokenRepository::save);
     }
-    private void checkTokenIsActive(RefreshToken refreshToken,Long userId){
+
+    private void checkTokenIsActive(RefreshToken refreshToken, Long userId) {
         if (refreshToken.isActive())
             return;
         deactivateRefreshTokensByUserId(userId);
         throw new TokenNotActiveException();
     }
-    private void checkTokenExpires(RefreshToken refreshToken, LocalDateTime currentDate,Long userId){
-        if(currentDate.isBefore(refreshToken.getExpires().toLocalDateTime()))
+
+    private void checkTokenExpires(RefreshToken refreshToken, LocalDateTime currentDate, Long userId) {
+        if (currentDate.isBefore(refreshToken.getExpires().toLocalDateTime()))
             return;
         deactivateRefreshTokensByUserId(userId);
-        throw new TokenExpiredException(RefreshToken.class,"expires",refreshToken.getExpires());
+        throw new TokenExpiredException(RefreshToken.class, "expires", refreshToken.getExpires());
     }
 
 }

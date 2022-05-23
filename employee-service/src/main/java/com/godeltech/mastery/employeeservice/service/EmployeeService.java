@@ -1,6 +1,5 @@
 package com.godeltech.mastery.employeeservice.service;
 
-import com.godeltech.mastery.employeeservice.dao.entity.Phone;
 import com.godeltech.mastery.employeeservice.dto.EmployeeDtoRequest;
 import com.godeltech.mastery.employeeservice.dto.EmployeeDtoResponse;
 

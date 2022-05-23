@@ -1,7 +1,6 @@
 package com.godeltech.mastery.securityservice.handling;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.godeltech.mastery.securityservice.handling.ApiErrorResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.AuthenticationException;
@@ -25,7 +24,7 @@ public class JwtAuthenticationFailureHandler implements AuthenticationFailureHan
     public void onAuthenticationFailure(HttpServletRequest request,
                                         HttpServletResponse response,
                                         AuthenticationException exception) throws IOException {
-        log.error("Rejected access : Unauthorized",exception);
+        log.error("Rejected access : Unauthorized", exception);
         final ApiErrorResponse apiError = new ApiErrorResponse(exception.getMessage());
 
         response.setContentType(APPLICATION_JSON_VALUE);

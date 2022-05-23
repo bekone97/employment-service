@@ -45,6 +45,7 @@ import static org.mockito.Mockito.*;
         dataTypeFactoryClass = AdditionalPostgresDataTypeFactory.class)
 @ActiveProfiles("test")
 class EmployeeServiceIntegrationTest extends DatabaseContainerInitializer {
+
     @Autowired
     private EmployeeService employeeService;
     @MockBean
@@ -54,7 +55,7 @@ class EmployeeServiceIntegrationTest extends DatabaseContainerInitializer {
     private EmployeeMapper employeeMapper;
     @MockBean
     private KafkaMessageSender kafkaMessageSender;
-    private final ModelMapper modelMapper2 =new ModelMapper();
+    private final ModelMapper modelMapper2 = new ModelMapper();
 
     EmployeeDtoResponse expected;
     EmployeeDtoRequest employeeDtoRequest;
@@ -62,11 +63,12 @@ class EmployeeServiceIntegrationTest extends DatabaseContainerInitializer {
     DepartmentDtoResponse departmentDtoResponse;
     PhoneDto phoneDto;
 
+
     @BeforeEach
     public void setUp() {
         List<Phone> phones = new ArrayList<>();
         phones.add(Phone.builder()
-                        .phoneId(1L)
+                .phoneId(1L)
                 .number(297342979)
                 .employee(employee)
                 .build());
@@ -77,63 +79,71 @@ class EmployeeServiceIntegrationTest extends DatabaseContainerInitializer {
                 .departmentId(1L)
                 .jobTittle("sales")
                 .gender(Gender.MALE)
-                .dateOfBirth(LocalDate.of(1997,06,25))
+                .dateOfBirth(LocalDate.of(1997, 06, 25))
                 .phones(phones)
                 .build();
-        departmentDtoResponse=DepartmentDtoResponse.builder()
+        departmentDtoResponse = DepartmentDtoResponse.builder()
                 .departmentId(1L)
                 .departmentName("It")
                 .build();
         employeeDtoRequest = modelMapper2.map(employee, EmployeeDtoRequest.class);
-        expected=employeeMapper.mapToEmployeeDtoResponse(employee,departmentDtoResponse);
+        expected = employeeMapper.mapToEmployeeDtoResponse(employee, departmentDtoResponse);
     }
 
     @AfterEach
-    public void tearDown(){
-        expected =null;
-        employeeDtoRequest =null;
-        employee=null;
-        phoneDto=null;
+    public void tearDown() {
+        expected = null;
+        employeeDtoRequest = null;
+        employee = null;
+        phoneDto = null;
     }
 
     @Test
-    @DataSet(value = {"dataset/init/employee/init.yml", "dataset/init/phone/init.yml"},useSequenceFiltering = false,cleanBefore = true)
+    @DataSet(value = {"dataset/init/employee/init.yml", "dataset/init/phone/init.yml"},
+            useSequenceFiltering = false,
+            executeScriptsAfter = {"scripts/cleanPhone.sql", "scripts/cleanEmployee.sql"})
     void getEmployees() {
         when(departmentApiClient.getDepartmentDtoById(1L)).thenReturn(departmentDtoResponse);
         var actual = employeeService.getEmployees();
 
-        assertEquals(1,actual.size());
+        assertEquals(1, actual.size());
         assertEquals(expected, actual.get(0));
 
-        verify(departmentApiClient,times(1)).getDepartmentDtoById(departmentDtoResponse.getDepartmentId());
+        verify(departmentApiClient, times(1)).getDepartmentDtoById(departmentDtoResponse.getDepartmentId());
     }
 
     @Test
-    @DataSet(value = {"dataset/init/employee/init.yml", "dataset/init/phone/init.yml"},useSequenceFiltering = false,cleanBefore = true)
+    @DataSet(value = {"dataset/init/employee/init.yml", "dataset/init/phone/init.yml"},
+            useSequenceFiltering = false,
+            executeScriptsAfter = {"scripts/cleanPhone.sql", "scripts/cleanEmployee.sql"})
     void getEmployeeById() throws ResourceNotFoundException {
         when(departmentApiClient.getDepartmentDtoById(1L)).thenReturn(departmentDtoResponse);
 
         var actual = employeeService.getEmployeeById(1L);
 
-        assertEquals(expected,actual);
+        assertEquals(expected, actual);
         verify(departmentApiClient).getDepartmentDtoById(departmentDtoResponse.getDepartmentId());
     }
 
     @Test
-    @DataSet(value = {"dataset/init/employee/init.yml", "dataset/init/phone/init.yml"},useSequenceFiltering = false,cleanBefore = true)
+    @DataSet(value = {"dataset/init/employee/init.yml", "dataset/init/phone/init.yml"},
+            useSequenceFiltering = false,
+            executeScriptsAfter = {"scripts/cleanPhone.sql", "scripts/cleanEmployee.sql"})
     void getEmployeeByIdFail() {
         var actual = assertThrows(ResourceNotFoundException.class,
                 () -> employeeService.getEmployeeById(2L));
 
         assertTrue(actual.getMessage().contains("Employee wasn't found by employeeId=2"));
 
-        verify(departmentApiClient,never()).getDepartmentDtoById(departmentDtoResponse.getDepartmentId());
+        verify(departmentApiClient, never()).getDepartmentDtoById(departmentDtoResponse.getDepartmentId());
     }
 
 
     @Test
-    @DataSet(value = {"dataset/init/employee/init.yml", "dataset/init/phone/init.yml"},useSequenceFiltering = false,cleanBefore = true)
-    @ExpectedDataSet(value = {"dataset/expected/employee/update.yml","dataset/expected/phone/updateEmployee.yml"})
+    @DataSet(value = {"dataset/init/employee/init.yml", "dataset/init/phone/init.yml"},
+            useSequenceFiltering = false,
+            executeScriptsAfter = {"scripts/cleanPhone.sql", "scripts/cleanEmployee.sql"})
+    @ExpectedDataSet(value = {"dataset/expected/employee/update.yml", "dataset/expected/phone/updateEmployee.yml"})
     void update() throws ResourceNotFoundException {
         employeeDtoRequest.setGender(Gender.FEMALE);
         expected.setGender(Gender.FEMALE);
@@ -147,7 +157,9 @@ class EmployeeServiceIntegrationTest extends DatabaseContainerInitializer {
     }
 
     @Test
-    @DataSet(value = {"dataset/init/employee/init.yml","dataset/init/phone/init.yml"},useSequenceFiltering = false,cleanBefore = true)
+    @DataSet(value = {"dataset/init/employee/init.yml", "dataset/init/phone/init.yml"},
+            useSequenceFiltering = false,
+            executeScriptsAfter = {"scripts/cleanPhone.sql", "scripts/cleanEmployee.sql"})
     void updateFail() {
 
         var actual = assertThrows(ResourceNotFoundException.class,
@@ -158,18 +170,22 @@ class EmployeeServiceIntegrationTest extends DatabaseContainerInitializer {
     }
 
     @Test
-    @DataSet(value = {"dataset/init/employee/init.yml", "dataset/init/phone/init.yml"},useSequenceFiltering = false,cleanBefore = true)
+    @DataSet(value = {"dataset/init/employee/init.yml", "dataset/init/phone/init.yml"},
+            useSequenceFiltering = false,
+            executeScriptsAfter = {"scripts/cleanPhone.sql", "scripts/cleanEmployee.sql"})
     @ExpectedDataSet(value = {"dataset/expected/employee/delete.yml", "dataset/expected/phone/delete.yml"})
     void deleteById() throws ResourceNotFoundException {
         when(departmentApiClient.getDepartmentDtoById(1L)).thenReturn(departmentDtoResponse);
 
         employeeService.deleteById(1L);
 
-        verify(departmentApiClient,times(1)).getDepartmentDtoById(1L);
+        verify(departmentApiClient, times(1)).getDepartmentDtoById(1L);
     }
 
     @Test
-    @DataSet(value = {"dataset/init/employee/init.yml", "dataset/init/phone/init.yml"},useSequenceFiltering = false,cleanBefore = true)
+    @DataSet(value = {"dataset/init/employee/init.yml", "dataset/init/phone/init.yml"},
+            useSequenceFiltering = false,
+            executeScriptsAfter = {"scripts/cleanPhone.sql", "scripts/cleanEmployee.sql"})
     void deleteByIdFail() {
 
         var actual = assertThrows(ResourceNotFoundException.class,
@@ -180,7 +196,9 @@ class EmployeeServiceIntegrationTest extends DatabaseContainerInitializer {
     }
 
     @Test
-    @DataSet(value = {"dataset/init/employee/init.yml", "dataset/init/phone/init.yml"},useSequenceFiltering = false,cleanBefore = true)
+    @DataSet(value = {"dataset/init/employee/init.yml", "dataset/init/phone/init.yml"},
+            useSequenceFiltering = false,
+            executeScriptsAfter = {"scripts/cleanPhone.sql", "scripts/cleanEmployee.sql"})
     void findByFirstName() throws ResourceNotFoundException {
         List<EmployeeDtoResponse> expectedList = Collections.singletonList(expected);
 
@@ -188,13 +206,15 @@ class EmployeeServiceIntegrationTest extends DatabaseContainerInitializer {
 
         var actual = employeeService.findByFirstNameLike(this.expected.getFirstName());
 
-        assertEquals( expectedList, actual);
+        assertEquals(expectedList, actual);
 
         verify(departmentApiClient).getDepartmentDtoById(1L);
     }
+
     @Test
     @DataSet(value = {"dataset/init/employee/init.yml", "dataset/init/phone/init.yml"},
             useSequenceFiltering = false,
+            executeScriptsAfter = {"scripts/cleanPhone.sql", "scripts/cleanEmployee.sql"},
             executeScriptsBefore = {"scripts/employeeSeq.sql", "scripts/phoneSeq.sql"})
     @ExpectedDataSet(value = {"dataset/expected/employee/save.yml", "dataset/expected/phone/saveEmployee.yml"})
     void save() throws ExecutionException, InterruptedException, TimeoutException {

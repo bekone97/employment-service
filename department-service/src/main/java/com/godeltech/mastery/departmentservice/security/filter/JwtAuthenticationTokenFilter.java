@@ -23,7 +23,6 @@ import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 public class JwtAuthenticationTokenFilter extends AbstractAuthenticationProcessingFilter {
 
 
-
     public JwtAuthenticationTokenFilter(RequestMatcher requiresAuthenticationRequestMatcher, AuthenticationManager authenticationManager) {
         super(requiresAuthenticationRequestMatcher, authenticationManager);
     }
@@ -41,19 +40,19 @@ public class JwtAuthenticationTokenFilter extends AbstractAuthenticationProcessi
             throws IOException, ServletException {
 
         super.successfulAuthentication(request, response, chain, authResult);
-        chain.doFilter(request,response);
+        chain.doFilter(request, response);
     }
 
     @Override
-    public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException{
-        final String token= getJwtFromRequest(request);
+    public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
+        final String token = getJwtFromRequest(request);
         final JwtAuthenticationToken authToken = new JwtAuthenticationToken(token);
 
         return getAuthenticationManager().authenticate(authToken);
     }
 
 
-    private String getJwtFromRequest(HttpServletRequest request){
+    private String getJwtFromRequest(HttpServletRequest request) {
         String authorizationHeader = request.getHeader(AUTHORIZATION);
         if (authorizationHeader == null || !authorizationHeader.startsWith(TOKEN_PREFIX)) {
             throw new AuthenticationCredentialsNotFoundException("No JWT token found in request headers");

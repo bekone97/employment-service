@@ -11,9 +11,9 @@ public class EmployeeAdultValidator implements ConstraintValidator<EmployeeAdult
 
     @Override
     public boolean isValid(LocalDate dateOfBirth, ConstraintValidatorContext constraintValidatorContext) {
-       return Optional.ofNullable(dateOfBirth)
-                .map(dob->Period.between(dob,LocalDate.now()).getYears())
-                .map(age->age>=18)
-               .orElse(true);
+        return Optional.ofNullable(dateOfBirth)
+                .map(dob -> Period.between(dob, LocalDate.now()).getYears())
+                .map(age -> age >= 18)
+                .orElse(true);
     }
 }

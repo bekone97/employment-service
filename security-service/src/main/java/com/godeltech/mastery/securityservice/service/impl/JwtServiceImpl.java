@@ -31,7 +31,7 @@ import static java.lang.System.currentTimeMillis;
 public class JwtServiceImpl implements JWTService {
 
     @Value("${app.jwt.secret}")
-    private String SECRET_KEY ;
+    private String SECRET_KEY;
     private final RefreshTokenService refreshTokenService;
     private final UserService userService;
 
@@ -63,7 +63,7 @@ public class JwtServiceImpl implements JWTService {
         var refreshToken = getValidHeader(header);
         var token = refreshTokenService.getByRefreshToken(refreshToken);
         User user = userService.getById(token.getUserId());
-        return createTokensByRefreshToken(user,token);
+        return createTokensByRefreshToken(user, token);
     }
 
     private String getValidHeader(String header) {
@@ -99,6 +99,6 @@ public class JwtServiceImpl implements JWTService {
 
     private RefreshToken replacedRefreshToken(User user, RefreshToken token) {
         var currentDate = LocalDateTime.now();
-       return refreshTokenService.replaceToken(token,user,currentDate);
+        return refreshTokenService.replaceToken(token, user, currentDate);
     }
 }

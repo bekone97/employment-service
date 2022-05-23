@@ -20,7 +20,7 @@ import static com.godeltech.mastery.departmentservice.utils.ConstantUtil.JwtToke
 public class JwtAuthenticationProvider extends AbstractUserDetailsAuthenticationProvider {
 
     @Value("${app.jwt.secret}")
-    private  String SECRET_KEY;
+    private String SECRET_KEY;
 
     @Override
     public boolean supports(Class<?> authentication) {
@@ -42,7 +42,7 @@ public class JwtAuthenticationProvider extends AbstractUserDetailsAuthentication
         Algorithm algorithm = Algorithm.HMAC256(SECRET_KEY.getBytes());
         JWTVerifier verifier = JWT.require(algorithm).build();
         DecodedJWT decodedJWT = verifier.verify(token);
-        return new AuthenticatedUser(decodedJWT.getSubject(),decodedJWT.getClaim(CLAIM_ROLES).asString(),token);
+        return new AuthenticatedUser(decodedJWT.getSubject(), decodedJWT.getClaim(CLAIM_ROLES).asString(), token);
     }
 
 }

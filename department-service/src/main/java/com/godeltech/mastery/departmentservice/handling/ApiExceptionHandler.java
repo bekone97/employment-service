@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class ApiExceptionHandler {
 
 
-
     @ExceptionHandler(value = ResourceNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ApiErrorResponse resourceNotFoundExceptionHandler(ResourceNotFoundException exception) {
@@ -31,9 +30,10 @@ public class ApiExceptionHandler {
     public ApiErrorResponse illegalArgumentExceptionHandler(IllegalArgumentException exception) {
         return new ApiErrorResponse(exception.getMessage());
     }
+
     @ExceptionHandler(value = JwtAuthenticationException.class)
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
-    public ApiErrorResponse jwtAuthenticationExceptionHandler(JwtAuthenticationException exception){
+    public ApiErrorResponse jwtAuthenticationExceptionHandler(JwtAuthenticationException exception) {
         return new ApiErrorResponse(exception.getMessage());
     }
 }

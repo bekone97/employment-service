@@ -3,6 +3,7 @@ package com.godeltech.mastery.employeeservice.dao.entity;
 import lombok.*;
 
 import javax.persistence.*;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

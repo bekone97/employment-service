@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class ApiErrorResponse {
 
-    private LocalDateTime timestamp=LocalDateTime.now();
+    private LocalDateTime timestamp = LocalDateTime.now();
 
     private String message;
 

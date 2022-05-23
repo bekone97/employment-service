@@ -23,11 +23,11 @@ public class PredicateFactory<T> {
 
     @Autowired
     public PredicateFactory(List<PredicateType<T>> predicateTypes) {
-        predicateContext= predicateTypes.stream().collect(toMap(PredicateType<T>::getOperation,Function.identity()));
+        predicateContext = predicateTypes.stream().collect(toMap(PredicateType<T>::getOperation, Function.identity()));
     }
 
-    public Predicate getPredicateType(SearchCriteria searchCriteria, Root<T> root, CriteriaBuilder criteriaBuilder){
-       return predicateContext.getOrDefault(searchCriteria.getOperation(), (PredicateType<T>) new NotExistPredicate())
-               .getPredicate(searchCriteria,root,criteriaBuilder);
+    public Predicate getPredicateType(SearchCriteria searchCriteria, Root<T> root, CriteriaBuilder criteriaBuilder) {
+        return predicateContext.getOrDefault(searchCriteria.getOperation(), (PredicateType<T>) new NotExistPredicate())
+                .getPredicate(searchCriteria, root, criteriaBuilder);
     }
 }

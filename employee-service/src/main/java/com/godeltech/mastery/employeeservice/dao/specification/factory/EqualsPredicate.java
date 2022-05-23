@@ -12,7 +12,7 @@ import javax.persistence.criteria.Root;
 @Component
 public class EqualsPredicate implements PredicateType<T> {
 
-    private static final Operation OPERATION=Operation.EQUALS;
+    private static final Operation OPERATION = Operation.EQUALS;
 
     @Override
     public Operation getOperation() {

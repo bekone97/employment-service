@@ -19,9 +19,8 @@ public class EmployeeSpecification implements Specification<Employee> {
     private final PredicateFactory<Employee> predicateFactory;
 
 
-
     @Override
     public Predicate toPredicate(Root<Employee> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
-        return predicateFactory.getPredicateType(searchCriteria,root,criteriaBuilder);
+        return predicateFactory.getPredicateType(searchCriteria, root, criteriaBuilder);
     }
 }

@@ -26,7 +26,7 @@ public class Config {
     private String dateTimePattern;
 
     @Bean
-    public ModelMapper modelMapper(){
+    public ModelMapper modelMapper() {
         return new ModelMapper();
     }
 
@@ -36,19 +36,22 @@ public class Config {
                 jacksonObjectMapperBuilder.serializers(
                         new LocalDateTimeSerializer(DateTimeFormatter.ofPattern(dateTimePattern)));
     }
+
     @Bean
-    public MessageSource validationMessageSource(){
-        ReloadableResourceBundleMessageSource messageSource= new ReloadableResourceBundleMessageSource();
+    public MessageSource validationMessageSource() {
+        ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
         messageSource.setBasename("classpath:messages/validation");
         messageSource.setDefaultEncoding("UTF-8");
         return messageSource;
     }
+
     @Bean
-    public LocalValidatorFactoryBean getValidator(){
+    public LocalValidatorFactoryBean getValidator() {
         LocalValidatorFactoryBean bean = new LocalValidatorFactoryBean();
         bean.setValidationMessageSource(validationMessageSource());
         return bean;
     }
+
     @Bean
     public CacheManager cacheManager() {
         return new ConcurrentMapCacheManager() {

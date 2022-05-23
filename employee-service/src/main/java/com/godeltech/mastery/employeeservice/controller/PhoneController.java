@@ -19,33 +19,33 @@ public class PhoneController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<PhoneDto> getPhones(@PathVariable Long employeeId){
-        log.info("Get all phones of employee with id:{}",employeeId);
+    public List<PhoneDto> getPhones(@PathVariable Long employeeId) {
+        log.info("Get all phones of employee with id:{}", employeeId);
         return phoneService.getPhonesByEmployee(employeeId);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public PhoneDto savePhone(@PathVariable Long employeeId,
-                              @RequestBody PhoneDto phoneDto){
-        log.info("Save new phone:{} for employee with id:{}",phoneDto,employeeId);
-        return phoneService.save(phoneDto,employeeId);
+                              @RequestBody PhoneDto phoneDto) {
+        log.info("Save new phone:{} for employee with id:{}", phoneDto, employeeId);
+        return phoneService.save(phoneDto, employeeId);
     }
 
     @PutMapping("/{phoneId}")
     @ResponseStatus(HttpStatus.OK)
     public PhoneDto updatePhone(@PathVariable Long employeeId,
                                 @PathVariable Long phoneId,
-                                @RequestBody PhoneDto phoneDto){
-        log.info("Update phone:{} with id :{} for employee with id:{}",phoneDto,phoneId,employeeId);
-        return phoneService.update(phoneId,phoneDto,employeeId);
+                                @RequestBody PhoneDto phoneDto) {
+        log.info("Update phone:{} with id :{} for employee with id:{}", phoneDto, phoneId, employeeId);
+        return phoneService.update(phoneId, phoneDto, employeeId);
     }
 
     @DeleteMapping("/{phoneId}")
     @ResponseStatus(HttpStatus.OK)
     public void deletePhone(@PathVariable Long phoneId,
-                            @PathVariable Long employeeId){
-        log.info("Delete phone with id:{}",phoneId);
-        phoneService.deleteById(phoneId,employeeId);
+                            @PathVariable Long employeeId) {
+        log.info("Delete phone with id:{}", phoneId);
+        phoneService.deleteById(phoneId, employeeId);
     }
 }
