@@ -10,7 +10,7 @@ import org.testcontainers.utility.DockerImageName;
 public abstract class DatabaseContainerInitializer {
 
     @Container
-    public static final PostgreSQLContainer postgreSQLContainer = new PostgreSQLContainer<>(DockerImageName.parse("postgres:13"))
+    public static final PostgreSQLContainer postgreSQLContainer = new PostgreSQLContainer<>(DockerImageName.parse("postgres:11.5"))
             .withUsername("postgres")
             .withPassword("postgres")
             .withDatabaseName("testEmployee")
