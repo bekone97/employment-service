@@ -11,7 +11,6 @@ import org.springframework.web.client.RestTemplate;
 @Slf4j
 public class RestTemplateDepartmentClientImpl implements DepartmentApiClient {
 
-    @Qualifier("departmentRestTemplate")
     private final RestTemplate departmentRestTemplate;
 
     @Override

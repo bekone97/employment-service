@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/log")
 public class LogController {
 
-    Logger logger = LoggerFactory.getLogger("logController");
+    private static final Logger logger = LoggerFactory.getLogger("logController");
 
     @GetMapping
     public String testActuator() {

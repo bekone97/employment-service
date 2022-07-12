@@ -1,0 +1,40 @@
+stages:
+  - build
+  - test
+  - deploy staging
+  - deploy production
+
+build:
+  stage: build
+  image: ubuntu:20.04
+  tags:
+    - build
+  script:
+    -echo "Build" >> index.html
+  artifacts:
+    paths:
+      - build/
+
+test_on_dev:
+  stage: test
+  image: ubuntu:20.04
+  tags:
+    - test
+  script:
+    -test -f build/index.html
+
+deploy_staging:
+  stage: deploy staging
+  tags:
+    - stage
+  script:
+    - cp build/index.html /var/www/index.html
+    - test -f /var/www/index.html
+
+deploy_production:
+  stage: deploy production
+  tags:
+    - prod
+  script:
+    - cp build/index.html /var/www/index.html
+    - test -f /var/www/index.html

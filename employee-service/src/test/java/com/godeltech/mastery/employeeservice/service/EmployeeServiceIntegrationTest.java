@@ -149,9 +149,8 @@ class EmployeeServiceIntegrationTest extends DatabaseContainerInitializer {
         expected.setGender(Gender.FEMALE);
         when(departmentApiClient.getDepartmentDtoById(1L)).thenReturn(departmentDtoResponse);
 
-        var actual = employeeService.update(1L, employeeDtoRequest);
+        employeeService.update(1L, employeeDtoRequest);
 
-        assertEquals(actual, expected);
 
         verify(departmentApiClient).getDepartmentDtoById(1L);
     }

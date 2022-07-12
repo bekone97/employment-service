@@ -19,9 +19,12 @@ import lombok.var;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static com.godeltech.mastery.employeeservice.utils.ConstantUtil.Exception.EMPLOYEE_ID_FOR_EXCEPTION;
@@ -44,6 +47,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     public List<EmployeeDtoResponse> getEmployees() {
         log.debug("Get all employees");
         var employees = employeeRepository.findAll();
+
         return employees.stream()
                 .map(employee -> employeeMapper.mapToEmployeeDtoResponse(employee, departmentApiClient.getDepartmentDtoById(employee.getDepartmentId())))
                 .collect(Collectors.toList());
@@ -80,6 +84,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     public EmployeeDtoResponse update(Long employeeId, EmployeeDtoRequest employeeDtoRequest) {
         log.debug("Check existing employee by employeeId :{} and update it by :{}",
                 employeeId, employeeDtoRequest);
+
 
         return employeeRepository.findById(employeeId)
                 .map(emp -> employeeMapper.mapToEmployee(employeeDtoRequest, employeeId))
