@@ -13,7 +13,6 @@ import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Service;
 
-import javax.mail.MessagingException;
 
 import static com.godeltech.mastery.emailservice.utils.ConstantUtil.Kafka.TOPIC_EMPLOYEE_CREATION;
 
@@ -28,7 +27,7 @@ public class KafkaEmployeeCreationListenerServiceImpl implements EmployeeCreatio
     @Override
     @KafkaListener(groupId = TOPIC_EMPLOYEE_CREATION, topics = {ConstantUtil.Kafka.TOPIC_EMPLOYEE_CREATION}, containerFactory = "listenerContainerFactory")
     @SendTo
-    public EmployeePayload employeePayloadCreation(EmployeePayload employeePayload) throws JsonProcessingException, MessagingException {
+    public EmployeePayload employeePayloadCreation(EmployeePayload employeePayload) throws JsonProcessingException {
         log.info("Received employeePayload :{}", employeePayload);
         emailSenderService.sendEmailAboutCreationEmployee(employeePayload);
         return employeePayload;
