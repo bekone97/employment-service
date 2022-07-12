@@ -6,13 +6,12 @@ import com.godeltech.mastery.emailservice.dto.EmployeePayload;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.springframework.messaging.handler.annotation.Header;
 
-import javax.mail.MessagingException;
 
 
 public interface EmployeeCreationListenerService {
 
 
-    EmployeePayload employeePayloadCreation(EmployeePayload employeePayload) throws JsonProcessingException, MessagingException;
+    EmployeePayload employeePayloadCreation(EmployeePayload employeePayload) throws JsonProcessingException;
 
 
     void unknown(ConsumerRecord<String, Object> object,
