@@ -1,0 +1,2 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=com.godeltech.mastery.starterservice.config.StarterConfiguration
+org.springframework.context.ApplicationContextInitializer=com.godeltech.mastery.starterservice.initializer.StarterInitializer

@@ -2,9 +2,11 @@ package com.godeltech.mastery.departmentservice.controller;
 
 import com.godeltech.mastery.departmentservice.dto.DepartmentDtoResponse;
 import com.godeltech.mastery.departmentservice.service.DepartmentService;
+import com.godeltech.mastery.starterservice.listener.ContextListener;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.ContextCleanupListener;
 
 @RestController
 @RequiredArgsConstructor

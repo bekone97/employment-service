@@ -1,0 +1,6 @@
+stats:
+  where: Британия, Испания, Мадрид
+  enable: true
+#spring:
+#  profiles:
+#    active: run
